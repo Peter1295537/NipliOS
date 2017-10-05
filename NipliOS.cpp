@@ -9,9 +9,6 @@
 void signal_handler(int no) {
 }
 
-void array_maker(char input[], char *array[], int in, int n) {
-		
-}
 
 int main() {
 	char command[50];
@@ -20,7 +17,6 @@ int main() {
 	
 	signal(SIGINT, signal_handler);
 
-	char *array[50];
 	pid_t child;
 	
 	while(1) {	
