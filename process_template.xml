@@ -8,13 +8,7 @@
 
 	<cycles_remaining>321</cycles_remaining>
 
-<<<<<<< HEAD
-	<cycles_elapsed></cycles_elapsed>
-
-	<io> <!-- list of io requests to be made -->
-=======
-	<io numrequsts=1> <!-- list of io requests to be made -->
->>>>>>> f42004b9fb8fe495725c87469a6f0a4b324005f4
+	<io numrequests="1"> <!-- list of io requests to be made -->
 		<io_request>25</io_request>	<!-- number of cycles required for this request -->
 	</io>
 
