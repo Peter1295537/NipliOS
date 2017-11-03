@@ -5,6 +5,7 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/types.h>
+#include "queue.h"
 
 void signal_handler(int no) {
 }
@@ -14,7 +15,9 @@ int main() {
 	char command[50];
 	char *token;
 	
-	
+	queue ready_queue;
+	queue wait_queue;	
+
 	signal(SIGINT, signal_handler);
 
 	pid_t child;
