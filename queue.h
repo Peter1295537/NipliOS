@@ -6,12 +6,6 @@
 using namespace std;
 
 
-//Node structure for queue
-//struct node
-//{
-//        int data;
-//        struct node *next;
-//}*front, *back;
 
 
 

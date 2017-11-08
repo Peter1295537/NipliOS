@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <string.h>
 #include "queue.h"
+#include "process_class.h"
 
 
 void signal_handler(int no) {
@@ -13,12 +14,19 @@ void signal_handler(int no) {
 
 
 int main() {
+	//Variables for input
 	char command[50];
 	char *token;
 	char *second_arg;
+	string arg2;	
 	
+	//Array for process identification
+	process* programs[50];
+	
+	//Ready and wait queues for CPU
 	queue ready_queue;
-	queue wait_queue;	
+	queue wait_queue;
+	queue io_queue;	
 
 	signal(SIGINT, signal_handler);
 
@@ -43,7 +51,11 @@ int main() {
 			printf("System Reset \n");
 		}
 		else if (strncmp(token, "RUN", 50)==0) {
-			printf("Running: %s", second_arg);
+			arg2=string (second_arg);
+			printf("%s", arg2);
+
+			//process test= process(second_arg);
+			//printf("pid=%d", test.getPID());
 		}
                 else if (strncmp(token, "exit",4)==0) {
                         raise(SIGKILL);
