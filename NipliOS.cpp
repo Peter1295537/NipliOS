@@ -22,6 +22,7 @@ int main() {
 	
 	//Array for process identification
 	process* programs[50];
+	int pidCounter=0;
 	
 	//Ready and wait queues for CPU
 	queue ready_queue;
@@ -48,14 +49,17 @@ int main() {
 			printf("Total Memory Used: \n") ;
 		}
 		else if (strncmp(token, "RESET",5)==0) {
+			pidCounter=0;
 			printf("System Reset \n");
 		}
 		else if (strncmp(token, "RUN", 50)==0) {
-			arg2=string (second_arg);
-			printf("%s", arg2);
+			arg2=second_arg;
 
-			//process test= process(second_arg);
-			//printf("pid=%d", test.getPID());
+			printf("%s\n",arg2.c_str());		
+	
+			process test= process(arg2,pidCounter);
+			printf("pid= %s", test.getName().c_str());
+			pidCounter++;
 		}
                 else if (strncmp(token, "exit",4)==0) {
                         raise(SIGKILL);
