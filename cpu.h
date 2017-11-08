@@ -4,43 +4,15 @@ using namespace std;
 
 class processor{
 	private:
-		int cores;
-		int cache[];
-		int registers[];
-		int uptime;
+		process current;
 
 	public:
-		int getNumCores();
-		int dumpCache();
-		int dumpRegisters();
-		int getUpTime();
-		
-		int Process(process,int,int[]);
-		int swap(process,process,int); //integer for interrupt signal
-		int schedule(process);
+		int load(process);
+		int calculate(int);
+		process yield(process);
+		int io(int);
+		int out(string);
 
 }
 
 
-int getNumCores(){
-
-};
-int dumpCache(){
-
-}
-int dumpRegisters(){
-
-}
-int getUpTime(){
-
-}
-		
-int Process(process,int,int[]){
-
-}
-int swap(process,process,int){ //integer for interrupt signal
-
-}
-int schedule(process);{
-
-}

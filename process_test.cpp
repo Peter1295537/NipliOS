@@ -2,7 +2,7 @@
 
 int main(){
 	string filename = "process_template.xml";
-	process test(filename);
+	process test(filename,14627);
 	cout << "name: " << test.getName() << endl;
 	cout << "pid: " << test.getPID() << endl;
 	return 0;	

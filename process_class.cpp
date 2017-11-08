@@ -2,8 +2,10 @@
 
 
 using namespace std;
-process::process(string filename){
+process::process(string filename, int process_id){
 	state = state_t(NEW);
+	pid=process_id;
+	timeElapsed=0;
 	doc=xmlParseFile(filename.c_str());
 	if(doc==NULL){
 		cout << "document parsing failed";
@@ -19,10 +21,6 @@ process::process(string filename){
 			xmlChar* content = xmlNodeGetContent(node);
 			name = (char*)content;
 		}
-		else if(nodename.compare("pid")==0){
-			xmlChar* content = xmlNodeGetContent(node);
-			pid = atoi((const char*)content);
-		}
 		else if(nodename.compare("memory_requirement")==0){
 			xmlChar* content = xmlNodeGetContent(node);
 			memory = atoi((char*)content);
@@ -31,22 +29,10 @@ process::process(string filename){
 			xmlChar* content = xmlNodeGetContent(node);
 			timeRemaining=atoi((char*)content);
 		}
-		else if(nodename.compare("io")==0){
-			int numreqs = atoi((char*)xmlGetProp(node, (xmlChar*)"numrequests"));
-			int reqs[numreqs];
-
-			xmlNodePtr ioreq = node->children;
-			for(int i=0;i<numreqs;i++){
-				ioreq=ioreq->next;
-				reqs[i]=atoi((char*)xmlNodeGetContent(ioreq));
-			}
-
-			numrequests=numreqs;
-			requests=reqs;
+		else if(nodename.compare("io_reqs")==0){
+			xmlChar* content = xmlNodeGetContent(node);
+			numrequests=atoi((char*)content);
 		}
-		/*else if(node->name==(xmlChar*)"process_state"){
-			state= state_t((const char*)content);
-		}*/
 		else if(nodename.compare("priority")==0){
 			xmlChar* content = xmlNodeGetContent(node);
 			priority=atoi((char*)content);
@@ -74,11 +60,8 @@ int process::getTimeRemaining(){
  int process::getPriority(){
 	return priority;
 }
- int process::getNumRequests(){
+ int process::getRequests(){
 	return numrequests;
-}
-int * process::getRequests(){
-	return requests;
 }
  string process::getName(){
 	return name;

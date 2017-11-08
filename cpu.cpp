@@ -1,46 +1,33 @@
-#include <stdio>
 #include "process_class.h"
+#include "queue.h"
+#include "cpu.h"
 using namespace std;
 
-class processor{
-	private:
-		int cores;
-		int cache[];
-		int registers[];
-		int uptime;
-
-	public:
-		int getNumCores();
-		int dumpCache();
-		int dumpRegisters();
-		int getUpTime();
-		
-		int Process(process,int,int[]);
-		int swap(process,process,int); //integer for interrupt signal
-		int schedule(process);
-
+int processor::load(process _new){
+	current = _new;
+	current->setState(state_t(RUN));
+	return 0;
+	//return 1 if failure
 }
-
-
-int getNumCores(){
-
-};
-int dumpCache(){
-
+int processor::calculate(int cycles){
+	current->run(cycles);
+	return current->getTimeRemaining();
 }
-int dumpRegisters(){
-
+process processor::yield(process _new){
+	process old = current;
+	current=_new;
+	old->setState(state_t(READY));
+	current->setState(state_t(RUN));
+	return old;
 }
-int getUpTime(){
-
+process processor::io(int cycles){
+	current->setState = state_t(WAIT);
+	//ask for new process
+	//need a queue for waiting processes, add to that
+	//yield(
+	return current;
 }
-		
-int Process(process,int,int[]){
-
-}
-int swap(process,process,int){ //integer for interrupt signal
-
-}
-int schedule(process);{
-
+int processor::out(string message){
+	cout << message;
+	return 0;
 }

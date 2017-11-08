@@ -2,18 +2,12 @@
 <process>
 	<process_name>lmaos dummy process</process_name>
 
-	<pid>12345</pid>
-
 	<memory_requirement>123</memory_requirement>
 
 	<cycles_remaining>321</cycles_remaining>
 
-	<io numrequests="1"> <!-- list of io requests to be made -->
-		<io_request>25</io_request>	<!-- number of cycles required for this request -->
-	</io>
+	<io_reqs>3</io_reqs>
 
-	<process_state>NEW</process_state> <!-- possible states: NEW, READY, RUN, WAIT, EXIT -->
-	
 	<priority>1</priority>
 
 </process>

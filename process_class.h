@@ -17,31 +17,28 @@ class process{
 			WAIT,
 			EXIT
 		};
-		process(string);
+		process(string,int);
 		process();
-		//~process();
 		int getPID();
 	 	int getTimeRemaining();
 	 	int getTimeElapsed();
 		int getMemory();
 		int getPriority();
-		int getNumRequests();
-		int * getRequests();
-		string getName();
-		state_t getState();
+		int getRequests();
 		int run(int cycles);
 	 	int setState(state_t newstate);
+		string getName();
+		state_t getState();
 
 	private:
 	 	int timeRemaining;
-	 	int timeElapsed = 0;
+	 	int timeElapsed;
 	 	int pid;
 	 	int memory;
 	 	int priority;
 	 	int numrequests;
-	 	int* requests;
 		string name;
-		state_t state = state_t(NEW);;
+		state_t state;
 		xmlDocPtr doc;
 		xmlNodePtr root;
 		xmlNodePtr node;
