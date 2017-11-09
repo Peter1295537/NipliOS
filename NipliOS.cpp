@@ -20,7 +20,8 @@ int main() {
 	char *token;
 		
 	//Array for process identification
-	process programs[];
+	process programs[20];
+	//int for pid assingment
 	int pidCounter=0;
 	
 	//Ready and wait queues for CPU
@@ -40,8 +41,6 @@ int main() {
 		token=strtok(command, " ");
 
 		if (strncmp(token, "PROC",4)==0) {
-			cout<<programs[0].getName();
-			cout<<programs[1].getName();
 			printf("Process unfinished \n");
 		}
 		else if (strncmp(token, "LOAD",4)==0) {
