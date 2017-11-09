@@ -7,7 +7,7 @@
 #include <string.h>
 #include "queue.h"
 #include "process_class.h"
-
+#include "mem_mgmt.h"
 
 void signal_handler(int no) {
 }
@@ -28,6 +28,8 @@ int main() {
 	queue ready_queue;
 	queue wait_queue;
 	queue io_queue;	
+	
+	memory memory;
 
 	signal(SIGINT, signal_handler);
 
@@ -46,7 +48,7 @@ int main() {
 			printf("Loading \n");
 		}
 		else if (strncmp(token, "MEM",3)==0) {
-			printf("Total Memory Used: \n") ;
+			printf("Total Memory Used: %d MB\n", memory.getMemory()) ;
 		}
 		else if (strncmp(token, "RESET",5)==0) {
 			pidCounter=0;
