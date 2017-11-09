@@ -1,18 +1,26 @@
-#include <stdio>
+#include <stdio.h>
 #include "process_class.h"
 using namespace std;
-
+enum state_t{
+	NEW,
+	READY,
+	RUN,
+	WAIT,
+	EXIT
+};
 class processor{
 	private:
-		process current;
+		process* current;
+		int numcores;
 
 	public:
-		int load(process);
+		processor();
+		int load(process*);
 		int calculate(int);
-		process yield(process);
-		int io(int);
+		process* yield(process*);
+		process* io(int);
 		int out(string);
 
-}
+};
 
 

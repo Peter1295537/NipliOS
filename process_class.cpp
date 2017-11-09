@@ -2,6 +2,12 @@
 
 
 using namespace std;
+process::process(){
+	state = state_t(NEW);
+	pid=0;
+	timeElapsed=0;
+
+}
 process::process(string filename, int process_id){
 	state = state_t(NEW);
 	pid=process_id;
@@ -71,12 +77,12 @@ process::state_t process::getState(){
 }
 
 int process::run(int cycles){
-	if(timeRemaining>0){
-		timeRemaining-=cycles;
-		timeElapsed+=cycles;
-		return 0;
+	while(timeRemaining>0 && cycles>0){
+		--timeRemaining;
+		++timeElapsed;
+		--cycles;
 	}
-		return 1;
+		return timeRemaining;
 }
 int process::setState(state_t newstate){
 	return state=newstate;
