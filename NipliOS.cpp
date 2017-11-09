@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <string.h>
+#include <iostream>
 #include "queue.h"
 #include "process_class.h"
 
@@ -17,11 +18,9 @@ int main() {
 	//Variables for input
 	char command[50];
 	char *token;
-	char *second_arg;
-	string arg2;	
-	
+		
 	//Array for process identification
-	process* programs[50];
+	process programs[];
 	int pidCounter=0;
 	
 	//Ready and wait queues for CPU
@@ -37,9 +36,10 @@ int main() {
 		printf("NipliOS>");
 		fgets(command, 50, stdin);
 		token=strtok(command, " ");
-		second_arg=strtok(NULL, " ");
 
 		if (strncmp(token, "PROC",4)==0) {
+			cout<<programs[0].getName();
+			cout<<programs[1].getName();
 			printf("Process unfinished \n");
 		}
 		else if (strncmp(token, "LOAD",4)==0) {
@@ -52,14 +52,14 @@ int main() {
 			pidCounter=0;
 			printf("System Reset \n");
 		}
-		else if (strncmp(token, "RUN", 50)==0) {
-			arg2=second_arg;
-
-			printf("%s\n",arg2.c_str());		
-	
-			process test= process(arg2,pidCounter);
-			printf("pid= %s", test.getName().c_str());
+		else if (strncmp(token, "RUN", 3)==0) {
+			cout<<"What process? "<< endl;
+			string arg2;
+			cin>>arg2;
+			process tmp(arg2,pidCounter);
+			programs[pidCounter]=tmp;
 			pidCounter++;
+			
 		}
                 else if (strncmp(token, "exit",4)==0) {
                         raise(SIGKILL);
