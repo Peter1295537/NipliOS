@@ -1,27 +1,29 @@
-#include "process_class.h"
 #include "queue.h"
 #include "cpu.h"
 using namespace std;
 
-int processor::load(process _new){
+processor::processor(){
+
+}
+int processor::load(process* _new){
 	current = _new;
-	current->setState(state_t(RUN));
+	current.setState(process::state_t(RUN));
 	return 0;
 	//return 1 if failure
 }
 int processor::calculate(int cycles){
-	current->run(cycles);
-	return current->getTimeRemaining();
+	current.run(cycles);
+	return current.getTimeRemaining();
 }
 process processor::yield(process _new){
 	process old = current;
 	current=_new;
-	old->setState(state_t(READY));
-	current->setState(state_t(RUN));
+	old.setState(process::state_t(READY));
+	current.setState(process::state_t(RUN));
 	return old;
 }
 process processor::io(int cycles){
-	current->setState = state_t(WAIT);
+	current.setState(process::state_t(WAIT));
 	//ask for new process
 	//need a queue for waiting processes, add to that
 	//yield(

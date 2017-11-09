@@ -25,8 +25,8 @@ class process{
 		int getMemory();
 		int getPriority();
 		int getRequests();
-		int run(int cycles);
-	 	int setState(state_t newstate);
+		int run(int);
+	 	int setState(state_t);
 		string getName();
 		state_t getState();
 
