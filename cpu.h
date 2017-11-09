@@ -15,10 +15,10 @@ class processor{
 
 	public:
 		processor();
-		int load(process);
+		int load(process*);
 		int calculate(int);
-		process yield(process);
-		process io(int);
+		process* yield(process*);
+		process* io(int);
 		int out(string);
 
 };
