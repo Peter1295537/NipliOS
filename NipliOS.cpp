@@ -7,8 +7,8 @@
 #include <string.h>
 #include <iostream>
 #include "queue.h"
-#include "process_class.h"
 #include "mem_mgmt.h"
+#include "cpu.h"
 
 void signal_handler(int no) {
 }
@@ -28,6 +28,9 @@ int main() {
 	queue ready_queue;
 	queue wait_queue;
 	queue io_queue;	
+
+	//CPU
+	processor processor1();
 	
 	memory memory;
 
