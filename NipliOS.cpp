@@ -13,23 +13,17 @@
 void signal_handler(int no) {
 }
 
-
 int main() {
 	//Variables for input
 	char command[50];
 	char *token;
 		
-	//Array for process identification
-	process programs[20];
-	//int for pid assingment
-	int pidCounter=0;
-	
 	//Ready and wait queues for CPU
 	queue ready_queue;
 	queue wait_queue;
 	queue io_queue;	
 	
-	memory memory;
+	memory mainmem;
 
 	signal(SIGINT, signal_handler);
 
@@ -47,22 +41,19 @@ int main() {
 			printf("Loading \n");
 		}
 		else if (strncmp(token, "MEM",3)==0) {
-			printf("Total Memory Used: %d MB\n", memory.getMemory()) ;
+			printf("Total Memory Used: %d MB\n", mainmem.getMemory()) ;
 		}
 		else if (strncmp(token, "RESET",5)==0) {
-			pidCounter=0;
-			printf("System Reset \n");
+			mainmem.resetProcesses();
+			printf("System Reset, all processes terminated \n");
 		}
-		else if (strncmp(token, "RUN", 3)==0) {
-			cout<<"What process? "<< endl;
-			string arg2;
-			cin>>arg2;
-			process tmp(arg2,pidCounter);
-			programs[pidCounter]=tmp;
-			pidCounter++;
-			
+		else if (strncmp(token, "EXE", 3)==0) {
+			string filename;
+			cout<<"Select process to execute: "<< endl;
+			cin>>filename;
+			mainmem.createProcess(filename);	
 		}
-                else if (strncmp(token, "exit",4)==0) {
+                else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0){
                         raise(SIGKILL);
                 }
 
