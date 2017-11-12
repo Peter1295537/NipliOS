@@ -1,6 +1,7 @@
 #include<stdlib.h>
 #include<iostream>
-
+#include<vector>
+#include "process_class.h"
 using namespace std;
 
 class memory{
@@ -9,8 +10,15 @@ class memory{
 		int getTotalMemory();
 		int getFreeMemory();
 		int getMemory();
-		//void allocateProcess(process);
+		//process listProcesses()?
+		process& getProcess(int pid);
+		void createProcess(string filename);
+		void resetProcesses(); 
+		//void allocateProcess();
 	private:
 		int used;
 		bool mainmem[];
+		int pidCounter;
+		process tmp;
+		vector<process> processes;
 };
