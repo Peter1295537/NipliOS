@@ -19,8 +19,8 @@ int main() {
 	//Ready and wait queues for CPU
 	queue ready_queue;
 	queue wait_queue;
-	queue io_queue;	
-	int counter;
+	queue io_queue;
+	int counter=0;	
 
 	//CPU
 	processor processor1;
@@ -30,6 +30,7 @@ int main() {
 	
 	//Scheduler
 	rr shortterm(16);
+
 
 	signal(SIGINT, signal_handler);
 

@@ -10,7 +10,7 @@ rr::rr(int q) {
 void rr::swap(queue* x, processor* cpu, memory* main) {
 	int tmp;
 	process* input;
-	while(x->current() !=-1){
+	while(x->current() !=-1) {
 		tmp=x->remove();
 		input=&(main->getProcess(tmp));
 		cpu->load(input);

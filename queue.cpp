@@ -10,7 +10,7 @@ queue::queue(){
 void queue::insert(int input) {
 	node *tmp;
 	tmp= new (struct node);
-	if (input>0) {
+	if (input>=0) {
 		tmp->data=input;
 		tmp->next=NULL;
 		if (front==NULL) {
