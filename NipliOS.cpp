@@ -6,9 +6,7 @@
 #include <sys/types.h>
 #include <string.h>
 #include <iostream>
-#include "queue.h"
-#include "mem_mgmt.h"
-#include "cpu.h"
+#include "rr.h"
 
 void signal_handler(int no) {
 }
@@ -22,18 +20,23 @@ int main() {
 	queue ready_queue;
 	queue wait_queue;
 	queue io_queue;	
+	int counter;
 
 	//CPU
-	processor processor1();
+	processor processor1;
 	
+	//Memory
 	memory mainmem;
+	
+	//Scheduler
+	rr shortterm(16);
 
 	signal(SIGINT, signal_handler);
 
 	pid_t child;
 	
 	while(1) {	
-		printf("NipliOS>");
+		printf("\nNipliOS>");
 		fgets(command, 50, stdin);
 		token=strtok(command, " ");
 
@@ -54,7 +57,10 @@ int main() {
 			string filename;
 			cout<<"Select process to execute: "<< endl;
 			cin>>filename;
-			mainmem.createProcess(filename);	
+			mainmem.createProcess(filename);
+			ready_queue.insert(counter);
+			counter++;
+			shortterm.swap(&ready_queue, &processor1, &mainmem);	
 		}
                 else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0){
                         raise(SIGKILL);
