@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <string.h>
 #include <iostream>
-#include "rr.h"
+#include "../include/rr.h"
 
 void signal_handler(int no) {
 }

@@ -1,8 +1,8 @@
-#include "cpu.h"
+#include "../include/cpu.h"
 using namespace std;
 
 int main(){
-	process test("process_template.xml",66589);
+	process test("../data/process_template.xml",66589);
 	processor cpu;
 	cpu.load(&test);
 	cout << test.getTimeRemaining() << endl;

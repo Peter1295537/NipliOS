@@ -1,5 +1,5 @@
-#include "queue.h"
-#include "cpu.h"
+#include "../include/queue.h"
+#include "../include/cpu.h"
 using namespace std;
 
 processor::processor(){
