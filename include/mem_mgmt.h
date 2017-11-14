@@ -17,8 +17,8 @@ class memory{
 		//void allocateProcess();
 	private:
 		int used;
-		bool mainmem[];
 		int pidCounter;
 		process tmp;
 		vector<process> processes;
+		bool mainmem[];
 };
