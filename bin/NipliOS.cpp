@@ -8,6 +8,7 @@
 #include <iostream>
 #include "../include/rr.h"
 
+
 void signal_handler(int no) {
 }
 
@@ -18,6 +19,9 @@ int main() {
 		
 	//Ready and wait queues for CPU
 	queue ready_queue;
+	queue fore_ground;
+	queue back_ground;
+
 	queue wait_queue;
 	queue io_queue;
 	int counter=0;	
@@ -29,14 +33,20 @@ int main() {
 	memory mainmem;
 	
 	//Scheduler
-	rr shortterm(16);
-
+	int turn_counter=0;
+	rr ready(25);
+	rr fore(50);
+	
+	//Degradation counter
+	int tmp;
 
 	signal(SIGINT, signal_handler);
 
 	pid_t child;
 	
-	while(1) {	
+	while(1) {
+		
+//Input parsing	
 		printf("\nNipliOS>");
 		fgets(command, 50, stdin);
 		token=strtok(command, " ");
@@ -60,13 +70,35 @@ int main() {
 			cin>>filename;
 			mainmem.createProcess(filename);
 			ready_queue.insert(counter);
-			counter++;
-			shortterm.swap(&ready_queue, &processor1, &mainmem);	
+			counter++;	
 		}
                 else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0){
                         raise(SIGKILL);
                 }
+//Decides which queue to send to processer
 
+		if (mainmem.getProcess((ready_queue.current())).getTimeElapsed()>5000) {
+			tmp=ready_queue.remove();
+			fore_ground.insert(tmp);
+		}
+		if (mainmem.getProcess((fore_ground.current())).getTimeElapsed()>10000) {
+                        tmp=fore_ground.remove();
+                        back_ground.insert(tmp);
+                }
+
+		if (turn_counter<7) {
+			ready.swap(&ready_queue, &processor1, &mainmem);
+			turn_counter++;
+		}
+		else if (turn_counter>=7 & turn_counter<=8) {
+			fore.swap(&fore_ground, &processor1, &mainmem);
+			turn_counter++;
+		}
+		else if (turn_counter=9) {
+			turn_counter=0;
+			ready.fcfs(&back_ground,&processor1, &mainmem);
+		}
+		
 	}
 	return 0;
 }
