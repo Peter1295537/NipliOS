@@ -90,7 +90,7 @@ int main() {
 			ready.swap(&ready_queue, &processor1, &mainmem);
 			turn_counter++;
 		}
-		else if (turn_counter>=7 & turn_counter<=8) {
+		else if (turn_counter>=7 && turn_counter<=8) {
 			fore.swap(&fore_ground, &processor1, &mainmem);
 			turn_counter++;
 		}

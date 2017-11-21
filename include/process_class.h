@@ -23,7 +23,6 @@ class process{
 		process(string,int);
 		process();
 		int getPID();
-	 	int getTimeRemaining();
 	 	int getTimeElapsed();
 		int getMemory();
 		int getPriority();
@@ -33,6 +32,7 @@ class process{
 		bool isCritical();
 		string getName();
 		state_t getState();
+		bool hasResources();
 
 	private:
 	 	int timeRemaining;
@@ -49,6 +49,7 @@ class process{
 		string filename;
 		int critsection_start;
 		int critsection_end;
+		bool hasResources;
 
 
 

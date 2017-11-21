@@ -43,8 +43,7 @@ process* processor::yield(process* _new){
 process* processor::io(int cycles){
 	current->setState(process::state_t(WAIT));
 	//ask for new process
-	system::blockInsert(&current);
-	//system::readyRemove();
+	system::requestIO(current,cycles);
 	return current;
 }
 int processor::out(string message){
