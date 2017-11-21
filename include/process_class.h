@@ -30,6 +30,7 @@ class process{
 		int getRequests();
 		int run(int);
 	 	int setState(state_t);
+		bool isCritical();
 		string getName();
 		state_t getState();
 
@@ -46,6 +47,8 @@ class process{
 		xmlNodePtr root;
 		xmlNodePtr node;
 		string filename;
+		int critsection_start;
+		int critsection_end;
 
 
 

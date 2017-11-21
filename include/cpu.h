@@ -12,6 +12,7 @@ class processor{
 	private:
 		process* current;
 		int numcores;
+		bool preempt;
 
 	public:
 		processor();
@@ -20,6 +21,7 @@ class processor{
 		process* yield(process*);
 		process* io(int);
 		int out(string);
+		bool isInteruptable();
 
 };
 

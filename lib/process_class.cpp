@@ -88,17 +88,7 @@ int process::setState(state_t newstate){
 	return state=newstate;
 }
 	
-		
-/*process::~process(){
-	cout << "deconstructing";
-	free(requests);
-	free((void*)name);
-	free(&timeRemaining);
-	free(&timeElapsed);
-	free(&pid);
-	free(&memory);
-	free(&priority);
-	free(&numrequests);
-	free(&state);
-}
-*/
+bool process::isCritical(){
+	return (timeRemaining>=critsection_start && timeRemaining<=critsection_end);
+
+}	

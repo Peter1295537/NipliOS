@@ -6,6 +6,10 @@
 
 	<cycles_remaining>321</cycles_remaining>
 
+	<critsection_start>25</critsection_start>
+
+	<critsection_end>50</critsection_end>
+
 	<io_reqs>3</io_reqs>
 
 	<priority>1</priority>
