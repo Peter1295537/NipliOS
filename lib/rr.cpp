@@ -10,20 +10,35 @@ rr::rr(int q) {
 void rr::swap(queue* x, processor* cpu, memory* main) {
 	int tmp;
 	process* input;
-	while(x->current() !=-1) {
-		tmp=x->remove();
-		input=&(main->getProcess(tmp));
-		cpu->load(input);
-		cpu->calculate(quantum);
-		cpu->yield(input);
-		if (input->getTimeRemaining()>0) {
-			x->insert(tmp);
-		}
-	}
+	tmp=x->remove();
+	input=&(main->getProcess(tmp));
+	cpu->load(input);
+	cpu->calculate(quantum);
+	cpu->yield(input);
+	if (input->getTimeRemaining()>0) {
+                        x->insert(tmp);
+        }
+}
+
+
+void rr::fcfs(queue* x, processor* cpu, memory* main) {
+        int tmp;
+        process* input;
+        tmp=x->current();
+        input=&(main->getProcess(tmp));
+        cpu->load(input);
+        cpu->calculate(50);
+        cpu->yield(input);
+
+        if (input->getTimeRemaining()<=0) {
+                        x->remove();
+        }
+
+}
+
 	
 
 
-}
 
 int rr::getQuantum() {
 	return quantum;
