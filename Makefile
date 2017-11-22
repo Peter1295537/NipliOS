@@ -7,6 +7,7 @@ OS=NipliOS
 SAN_FLAGS=-lxml2 -lasan -g -std=c++11 -fsanitize=address -fno-omit-frame-pointer -fstack-protector -Wstack-protector 
 FLAGS=-lxml2 -g -std=c++11 -fno-omit-frame-pointer -fstack-protector -Wstack-protector 
 MEM=mem_mgmt
+THREAD=-lpthread
 cputest: $(CPU)
 	g++ test/cputest.cpp lib/$(CLASS).o lib/$(CPU).o $(FLAGS) -o bin/cputest
 
@@ -20,7 +21,7 @@ $(CLASS):
 	g++ -c lib/$(CLASS).cpp $(FLAGS) -o lib/$(CLASS).o
 
 makeOS: 
-	g++ lib/$(MEM).cpp lib/$(CLASS).cpp lib/$(QUEUE).cpp lib/$(CPU).cpp lib/$(RR).cpp bin/$(OS).cpp -lxml2 -ggdb -o $(OS)
+	g++ lib/$(MEM).cpp lib/$(CLASS).cpp lib/$(QUEUE).cpp lib/$(CPU).cpp lib/$(RR).cpp bin/$(OS).cpp -lxml2 $(THREAD) -ggdb -o bin/$(OS)
 
 clean:
 	rm *.o 
