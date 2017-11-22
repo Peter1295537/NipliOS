@@ -124,6 +124,8 @@ int main() {
 	pthread_t threads[2];
 	int cpu1= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
 	int cpu2= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
+        int cpu3= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
+        int cpu4= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
 
 		
 	while(1) {
