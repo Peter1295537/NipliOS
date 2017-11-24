@@ -16,10 +16,11 @@ class queue {
         		int data;
         		struct node *next;
 		}*front, *back;
-
                 void insert(int);
                 int remove();
                 int current();
+		int size;
+		int getSize();
                 queue();
 
 };

@@ -55,17 +55,26 @@ void *cpu_processing(void *input) {
        	        }
                	else if (turn_counter==9 && params->three->current()>-1) {
                        	params->first->fcfs(params->three,params->cpu, params->main);
-			cout<<"ACK";
                	}
+		if (turn_counter<7 && params->one->current()==-1) {
+			if (params->two->current()>-1) {
+				params->second->swap(params->two, params->cpu, params->main);
+			}
+		}
+		if (turn_counter<9 && params->one->current()==-1) {
+                        if (params->two->current()==-1 && params->three->current()>-1) {
+                                params->first->fcfs(params->three,params->cpu, params->main);
+                        }
+                }
 		if (params->one->current()!=-1) {
-			if (params->main->getProcess((params->one->current())).getTimeElapsed()>5000) {
+			if (params->main->getProcess((params->one->current())).getTimeElapsed()>2500) {
 				tmp=params->one->remove();
                			params->two->insert(tmp);
        			}
 		}
       	 	
 		if (params->two->current()!=-1) {	
-			if (params->main->getProcess((params->two->current())).getTimeElapsed()>10000) {
+			if (params->main->getProcess((params->two->current())).getTimeElapsed()>5000) {
 				tmp=params->two->remove();
         	       		params->three->insert(tmp);
       			}
@@ -76,6 +85,12 @@ void *cpu_processing(void *input) {
 		}
 	        sem_post(&semaphore);
 		sleep(1);
+	}
+}
+
+void resetQueue(queue* input) {
+	while(input->current()>-1){
+		input->remove();
 	}
 }
 
@@ -137,8 +152,11 @@ int main() {
 
 		if (strncmp(token, "PROC",4)==0) {
 			sem_wait(&semaphore);
-			printf("Process unfinished \n");
-			cout<<ready_queue.current();
+			printf("Processes unfinished queue one: %d\n", ready_queue.getSize());
+			printf("Processes unfinished queue two: %d\n", fore_ground.getSize());
+			printf("Processes unfinished queue three: %d\n", back_ground.getSize());
+			printf("Processes unfinished wait queue: %d\n", wait_queue.getSize());
+			printf("Processes unfinished io queue: %d\n", io_queue.getSize());
         		sem_post(&semaphore);
 
 		}
@@ -156,6 +174,11 @@ int main() {
 		else if (strncmp(token, "RESET",5)==0) {
 			sem_wait(&semaphore);
 			mainmem.resetProcesses();
+			resetQueue(&ready_queue);
+			resetQueue(&fore_ground);
+			resetQueue(&back_ground);
+			resetQueue(&wait_queue);
+			resetQueue(&io_queue);
 			printf("System Reset, all processes terminated \n");
 			sem_post(&semaphore);
 		}
