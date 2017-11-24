@@ -181,6 +181,7 @@ int main() {
 			resetQueue(&io_queue);
 			printf("System Reset, all processes terminated \n");
 			sem_post(&semaphore);
+			counter=0;
 		}
 		else if (strncmp(token, "EXE", 3)==0) {
 			string filename;
