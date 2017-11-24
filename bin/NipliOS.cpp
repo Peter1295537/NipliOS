@@ -29,9 +29,12 @@ struct cpuThreadParams {
         //Memory
         memory* main;
 
-        //Scheduler
+        //Scheduler0
         rr* first;
         rr* second;
+
+	//EXE Flag
+	int* start;
 	
 };
 
@@ -41,49 +44,53 @@ void *cpu_processing(void *input) {
 	struct cpuThreadParams* params=(cpuThreadParams*)input;        
 	int tmp;
 	int turn_counter=0;
-	while (1) {	
+	int flag;
+	while (1) {
+			
 		sem_wait(&semaphore);			
+		flag=*params->start;
+		if (flag==1) {
+			if (turn_counter<7 && params->one->current()>-1) {
+       	                	params->first->swap(params->one,params->cpu, params->main);
+               		}
 
-		if (turn_counter<7 && params->one->current()>-1) {
-       	                params->first->swap(params->one,params->cpu, params->main);
-               	}
-
-               	else if (turn_counter>=7 && turn_counter<=8) {
-			if (params->two->current()>-1) {
-                       		params->second->swap(params->two, params->cpu, params->main);
+               		else if (turn_counter>=7 && turn_counter<=8) {
+				if (params->two->current()>-1) {
+                       			params->second->swap(params->two, params->cpu, params->main);
+				}
+       	        	}
+               		else if (turn_counter==9 && params->three->current()>-1) {
+                       		params->first->fcfs(params->three,params->cpu, params->main);
+               		}
+			if (turn_counter<7 && params->one->current()==-1) {
+				if (params->two->current()>-1) {
+					params->second->swap(params->two, params->cpu, params->main);
+				}
 			}
-       	        }
-               	else if (turn_counter==9 && params->three->current()>-1) {
-                       	params->first->fcfs(params->three,params->cpu, params->main);
-               	}
-		if (turn_counter<7 && params->one->current()==-1) {
-			if (params->two->current()>-1) {
-				params->second->swap(params->two, params->cpu, params->main);
+			if (turn_counter<9 && params->one->current()==-1) {
+                        	if (params->two->current()==-1 && params->three->current()>-1) {
+                               		params->first->fcfs(params->three,params->cpu, params->main);
+                        	}
+                	}
+			if (params->one->current()!=-1) {
+				if (params->main->getProcess((params->one->current())).getTimeElapsed()>2500) {
+					tmp=params->one->remove();
+               				params->two->insert(tmp);
+       				}
 			}
-		}
-		if (turn_counter<9 && params->one->current()==-1) {
-                        if (params->two->current()==-1 && params->three->current()>-1) {
-                                params->first->fcfs(params->three,params->cpu, params->main);
-                        }
-                }
-		if (params->one->current()!=-1) {
-			if (params->main->getProcess((params->one->current())).getTimeElapsed()>2500) {
-				tmp=params->one->remove();
-               			params->two->insert(tmp);
-       			}
-		}
       	 	
-		if (params->two->current()!=-1) {	
-			if (params->main->getProcess((params->two->current())).getTimeElapsed()>5000) {
-				tmp=params->two->remove();
-        	       		params->three->insert(tmp);
-      			}
+			if (params->two->current()!=-1) {	
+				if (params->main->getProcess((params->two->current())).getTimeElapsed()>5000) {
+					tmp=params->two->remove();
+        	       			params->three->insert(tmp);
+      				}
+			}
+			if (turn_counter>9) {
+				turn_counter=0;
+			}
 		}
+		sem_post(&semaphore);
 		turn_counter++;
-		if (turn_counter>9) {
-			turn_counter=0;
-		}
-	        sem_post(&semaphore);
 		sleep(1);
 	}
 }
@@ -124,7 +131,8 @@ int main() {
 	
 
 	signal(SIGINT, signal_handler);
-
+	int start=0;
+	
 	//Threading Struct Intializations
         sem_post(&semaphore);
 	
@@ -135,6 +143,8 @@ int main() {
 	params.main=&mainmem;
 	params.first=&ready;
 	params.second=&fore;
+	params.start=&start;
+	
 
 	pthread_t threads[2];
 	int cpu1= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
@@ -161,9 +171,16 @@ int main() {
 
 		}
 		else if (strncmp(token, "LOAD",4)==0) {
-        		sem_wait(&semaphore);
-	                printf("Loading \n");
-			sem_post(&semaphore);
+			string filename;
+                        sem_wait(&semaphore);
+                        cout<<"Select process to load: "<< endl;
+                        cin>>filename;
+                        mainmem.createProcess(filename);
+                        ready_queue.insert(counter);
+                        sem_post(&semaphore);
+
+                        counter++;
+
 		}
 		else if (strncmp(token, "MEM",3)==0) {
 	
@@ -173,6 +190,7 @@ int main() {
 		}
 		else if (strncmp(token, "RESET",5)==0) {
 			sem_wait(&semaphore);
+			start=0;
 			mainmem.resetProcesses();
 			resetQueue(&ready_queue);
 			resetQueue(&fore_ground);
@@ -184,12 +202,9 @@ int main() {
 			counter=0;
 		}
 		else if (strncmp(token, "EXE", 3)==0) {
-			string filename;
 			sem_wait(&semaphore);
-			cout<<"Select process to execute: "<< endl;
-			cin>>filename;
-			mainmem.createProcess(filename);
-			ready_queue.insert(counter); 
+			printf("Executing loaded programs");
+			start=1;
 			sem_post(&semaphore);
 
 			counter++;	
