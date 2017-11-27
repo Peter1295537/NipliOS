@@ -5,6 +5,7 @@
 queue::queue(){
         front= NULL;
         back= NULL;
+	size=0;
 }
 
 void queue::insert(int input) {
@@ -20,6 +21,7 @@ void queue::insert(int input) {
 			back->next=tmp;
 		}
 		back=tmp;
+		size++;
 	}
 }
 
@@ -30,7 +32,7 @@ int queue::remove() {
 		return -1;			
 	}
 	else {
-		
+		size--;	
 		tmp=front;
 		if (front==back) {
 			front=NULL;
@@ -57,6 +59,10 @@ int queue::current() {
 		output=tmp->data;
 		return(output);
 	}
+}
+
+int queue::getSize() {
+	return size;
 }
 
  

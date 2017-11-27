@@ -4,7 +4,7 @@
 
         <memory_requirement>123</memory_requirement>
 
-        <cycles_remaining>20000</cycles_remaining>
+        <cycles_remaining>10000000</cycles_remaining>
 
         <io_reqs>3</io_reqs>
 
