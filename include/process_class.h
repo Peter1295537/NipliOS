@@ -24,6 +24,7 @@ class process{
 		process();
 		int getPID();
 	 	int getTimeElapsed();
+		int getTimeRemaining();
 		int getMemory();
 		int getPriority();
 		int getRequests();
