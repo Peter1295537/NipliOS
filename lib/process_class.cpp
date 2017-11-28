@@ -12,7 +12,26 @@ process::process(string filename, int process_id){
 	state = state_t(NEW);
 	pid=process_id;
 	timeElapsed=0;
+	timeRemaining=0;
 	resources=false;
+	ifstream ifs(filename);
+	char data[32];
+	char cmemory[32];
+	ifs.getline(cmemory,32);
+	memory = atoi(cmemory);
+	while(ifs.good()){
+		ifs.getline(data,32);
+		string str(data);
+		script.push_back(str);
+
+		if(str.compare(0,9,"CALCULATE")==0){
+			timeRemaining=timeRemaining + std::stoi(str.substr(10));
+		}
+		if(str.compare("IO")==0){
+			numrequests++;
+		}
+	}
+	ifs.close();
 
 	
 }
