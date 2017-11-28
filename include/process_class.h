@@ -3,10 +3,8 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <stdlib.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-#include <libxml/xmlstring.h>
 
 
 using namespace std;
@@ -36,6 +34,7 @@ class process{
 		bool hasResources();
 
 	private:
+		vector<string> script;
 	 	int timeRemaining;
 	 	int timeElapsed;
 	 	int pid;
@@ -44,13 +43,11 @@ class process{
 	 	int numrequests;
 		string name;
 		state_t state;
-		xmlDocPtr doc;
-		xmlNodePtr root;
-		xmlNodePtr node;
 		string filename;
-		int critsection_start;
-		int critsection_end;
-		bool hasResources;
+		bool resources;
+		bool isCritical;
+		//int critsection_start;
+		//int critsection_end;
 
 
 
