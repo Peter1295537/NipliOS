@@ -209,9 +209,9 @@ int main() {
 
 			counter++;	
 		}
-    else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
+ 		   else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
 			raise(SIGKILL);
-    }
+    		}
 	}
 	return 0;
 }
