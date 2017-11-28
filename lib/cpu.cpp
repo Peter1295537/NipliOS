@@ -1,10 +1,10 @@
-#include "../include/queue.h"
+//#include "../include/queue.h"
 #include "../include/cpu.h"
-#include "../include/system.h"
+//#include "../include/system.h"
 using namespace std;
 
 processor::processor(){
-	preeempt=true;
+	preempt=true;
 
 }
 int processor::load(process* _new){
@@ -37,19 +37,19 @@ process* processor::yield(process* _new){
 		return old;
 	}
 	else{
-		return 1;
+		return NULL;
 	}
 }
 process* processor::io(int cycles){
 	current->setState(process::state_t(WAIT));
 	//ask for new process
-	system::requestIO(current,cycles);
+	//system.requestIO(current, cycles);
 	return current;
 }
 int processor::out(string message){
 	cout << message;
 	return 0;
 }
-int processor::isInteruptable(){
+bool processor::isInteruptable(){
 	return preempt;
 }

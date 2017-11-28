@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
-
+#include <vector>
 
 using namespace std;
 class process{
@@ -45,9 +45,9 @@ class process{
 		state_t state;
 		string filename;
 		bool resources;
-		bool isCritical;
-		//int critsection_start;
-		//int critsection_end;
+		bool critical;
+		int critsection_start;
+		int critsection_end;
 
 
 

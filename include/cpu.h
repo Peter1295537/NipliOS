@@ -1,5 +1,7 @@
 #include <stdio.h>
-#include "process_class.h"
+//#include "process_class.h"
+#include "queue.h"
+#include "system.h"
 using namespace std;
 enum state_t{
 	NEW,

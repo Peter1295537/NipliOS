@@ -5,14 +5,14 @@ process::process(){
 	state = state_t(NEW);
 	pid=0;
 	timeElapsed=0;
-	hasResources=false;
+	resources=false;
 	
 }
 process::process(string filename, int process_id){
 	state = state_t(NEW);
 	pid=process_id;
 	timeElapsed=0;
-	hasResources=false;
+	resources=false;
 
 	
 }
@@ -41,12 +41,9 @@ process::state_t process::getState(){
 	return state;
 }
 
-int process::calculate(int cycles){
-	timeRemaining=cycles;
-}
 
 int process::run(int cycles){
-	if(hasResources){
+	if(resources){
 	
 	}
 	while(timeRemaining>0 && cycles>0){
@@ -65,5 +62,5 @@ bool process::isCritical(){
 
 }	
 bool process::hasResources(){
-	return hasResources;
+	return resources;
 }

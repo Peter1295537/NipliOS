@@ -1,6 +1,5 @@
 #include <vector>
 #include "../include/process_class.h"
-#include "../include/queue.h"
 
 using namespace std;
 
