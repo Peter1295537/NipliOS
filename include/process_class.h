@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <vector>
 
+#include <errno.h>
 using namespace std;
 class process{
 
