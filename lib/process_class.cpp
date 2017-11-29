@@ -85,10 +85,6 @@ int process::setState(state_t newstate){
 	return state=newstate;
 }
 	
-bool process::isCritical(){
-	return (timeRemaining>=critsection_start && timeRemaining<=critsection_end);
-
-}	
 bool process::hasResources(){
 	return resources;
 }
@@ -97,7 +93,7 @@ string process::nextInstruction(){
 }
 string process::popInstruction(){
 	string ret = script.front();
-	script.erase(0);
+	script.erase(script.begin());
 	return ret;
 }
 int process:: ioComplete(){

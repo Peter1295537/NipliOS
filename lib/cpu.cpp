@@ -25,13 +25,13 @@ int processor::run(int cycles, system* sys){
 			calculate(cycles);
 		}
 		else{
-			current->currentLeft=inst.substr(10);
+			current->currentLeft=stoi(inst.substr(10));
 			calculate(cycles);
 		}
 	}
 
 	if(inst.compare("IO")==0){
-		if(!current.hasResources()){
+		if(!current->hasResources()){
 			std::default_random_engine generator;
 			std::uniform_int_distribution<int> distribution(25,50);
 			int ioCycles = distribution(generator);
@@ -41,7 +41,7 @@ int processor::run(int cycles, system* sys){
 			current->setState(process::state_t(WAIT));
 
 			sys->requestIO(current);
-			load(sys->next());
+			//load(sys->next());
 
 			if(calculate(cycles,sys)==0){
 				sys->freeIO(current);
@@ -53,9 +53,9 @@ int processor::run(int cycles, system* sys){
 	}
 	if(inst.compare("YIELD")==0){
 		current->setState(process::state_t(READY));
-		sys->addReady(current);
-		load(sys->next());
-		run(cycles,sys);
+		//sys->addReady(current);
+		//load(sys->next());
+		//run(cycles,sys);
 	}
 
 	if(inst.compare("OUT")==0){

@@ -1,6 +1,7 @@
-#include <stdio.h>
-//#include "process_class.h"
-#include "queue.h"
+//#ifndef CPU_H
+//#define CPU_H
+//#include <stdio.h>
+#include "process_class.h"
 #include "system.h"
 using namespace std;
 enum state_t{
@@ -15,10 +16,11 @@ class processor{
 		process* current;
 		int numcores;
 		bool preempt;
+		system* sys;
 
 	public:
 		processor();
-		int run(int,system*);
+		int run(int, system*);
 		int load(process*);
 		int calculate(int);
 		process* yield(process*);
@@ -27,3 +29,4 @@ class processor{
 };
 
 
+//#endif

@@ -1,3 +1,6 @@
+#ifndef SYSTEM_H
+#define SYSTEM_H
+
 #include <vector>
 
 #include <semaphore.h>
@@ -7,10 +10,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include "../include/process_class.h"
-#include "../include/mem_mgmt.h"
-#include "../include/rr.h"
-#include "../include/queue.h"
+#include "process_class.h"
+#include "mem_mgmt.h"
+#include "cpu.h"
+#include "queue.h"
+#include "rr.h"
 
 using namespace std;
 
@@ -23,6 +27,11 @@ class system{
 		vector<process*> READY;
 		vector<process*> EXIT;
 
+		int cpu1;
+		int cpu2;
+		int cpu3;
+		int cpu4;
+
 		queue ready_queue;
 		queue fore_ground;
 		queue back_ground;
@@ -30,7 +39,6 @@ class system{
 		int counter = 0;
 
 		processor processor1;
-		memory mainmem;
 
 		rr ready(25);
 		rr fore(50);
@@ -38,7 +46,8 @@ class system{
 		int start=0;
 		
 		struct cpuThreadParams params;
-		void *cpu_processing(void *);
+		static void cpu_processing(void *);
+		memory mainmem;
 
 
 	public:
@@ -53,7 +62,7 @@ class system{
 			rr* second;
 
 			int* start;
-		}
+		};
 		int spawn(string);
 		int kill(process*,string);
 		int addReady(process*);
@@ -62,4 +71,8 @@ class system{
 		int freeIO(process*);
 		process* next();
 		int run(int,system*);
+
+		void cpu_processing(void *);
+		void resetQueue(queue*);
 };
+#endif
