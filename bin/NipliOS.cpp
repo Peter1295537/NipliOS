@@ -8,7 +8,7 @@
 #include <iostream>
 #include <pthread.h>
 #include <semaphore.h>
-#include "../include/rr.h"
+#include "../include/system.h"
 
 
 sem_t semaphore;
