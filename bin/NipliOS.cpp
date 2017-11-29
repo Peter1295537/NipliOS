@@ -141,11 +141,11 @@ int main() {
 	params.start=&start;
 	
 
-	pthread_t threads[2];
+	pthread_t threads[4];
 	int cpu1= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
-	int cpu2= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
-        int cpu3= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
-        int cpu4= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
+	int cpu2= pthread_create(&threads[2], NULL, cpu_processing, (void*) &params);
+        int cpu3= pthread_create(&threads[3], NULL, cpu_processing, (void*) &params);
+        int cpu4= pthread_create(&threads[4], NULL, cpu_processing, (void*) &params);
 
 		
 	while(1) {
