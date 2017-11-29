@@ -21,7 +21,7 @@ $(CLASS):
 	g++ -c lib/$(CLASS).cpp $(FLAGS) -o lib/$(CLASS).o
 
 makeOS: 
-	g++ lib/$(MEM).cpp lib/$(CLASS).cpp lib/$(QUEUE).cpp lib/$(CPU).cpp lib/$(RR).cpp bin/$(OS).cpp -lxml2 $(THREAD) -ggdb -o bin/$(OS)
+	g++ lib/$(MEM).cpp lib/$(CLASS).cpp lib/$(QUEUE).cpp lib/$(CPU).cpp lib/$(RR).cpp bin/$(OS).cpp -lxml2 $(THREAD) $(FLAGS) -ggdb -o bin/$(OS)
 
 clean:
 	rm lib/*.o 

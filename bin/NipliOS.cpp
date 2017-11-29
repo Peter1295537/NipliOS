@@ -23,9 +23,6 @@ struct cpuThreadParams {
         queue* three;
 
 
-        //CPU
-        processor* cpu;
-
         //Memory
         memory* main;
 
@@ -45,31 +42,33 @@ void *cpu_processing(void *input) {
 	int tmp;
 	int turn_counter=0;
 	int flag;
+	processor processor1;
+	processor* cpu=&processor1;
 	while (1) {
 			
 		sem_wait(&semaphore);			
 		flag=*params->start;
 		if (flag==1) {
 			if (turn_counter<7 && params->one->current()>-1) {
-       	                	params->first->swap(params->one,params->cpu, params->main);
+       	                	params->first->swap(params->one,cpu, params->main);
                		}
 
                		else if (turn_counter>=7 && turn_counter<=8) {
 				if (params->two->current()>-1) {
-                       			params->second->swap(params->two, params->cpu, params->main);
+                       			params->second->swap(params->two, cpu, params->main);
 				}
        	        	}
                		else if (turn_counter==9 && params->three->current()>-1) {
-                       		params->first->fcfs(params->three,params->cpu, params->main);
+                       		params->first->fcfs(params->three,cpu, params->main);
                		}
 			if (turn_counter<7 && params->one->current()==-1) {
 				if (params->two->current()>-1) {
-					params->second->swap(params->two, params->cpu, params->main);
+					params->second->swap(params->two, cpu, params->main);
 				}
 			}
 			if (turn_counter<9 && params->one->current()==-1) {
                         	if (params->two->current()==-1 && params->three->current()>-1) {
-                               		params->first->fcfs(params->three,params->cpu, params->main);
+                               		params->first->fcfs(params->three,cpu, params->main);
                         	}
                 	}
 			if (params->one->current()!=-1) {
@@ -118,9 +117,6 @@ int main() {
 	queue wait_queue;
 	queue io_queue;
 	int counter=0;	
-
-	//CPU
-	processor processor1;
 	
 	//Memory
 	memory mainmem;
@@ -139,7 +135,6 @@ int main() {
 	params.one=&ready_queue;
 	params.two=&fore_ground;
 	params.three=&back_ground;
-	params.cpu=&processor1;
 	params.main=&mainmem;
 	params.first=&ready;
 	params.second=&fore;
