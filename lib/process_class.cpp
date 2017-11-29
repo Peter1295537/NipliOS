@@ -67,10 +67,19 @@ int process::run(int cycles){
 	}
 	while(timeRemaining>0 && cycles>0){
 		--timeRemaining;
+		--currentLeft;
 		++timeElapsed;
 		--cycles;
+
+		if(currentLeft==0){
+			string fin = popInstruction();
+			if(fin.compare("IO")==0){
+				complete++;
+			}
+			return cycles;
+		}
 	}
-		return timeRemaining;
+		return 0;;
 }
 int process::setState(state_t newstate){
 	return state=newstate;
@@ -82,4 +91,15 @@ bool process::isCritical(){
 }	
 bool process::hasResources(){
 	return resources;
+}
+string process::nextInstruction(){
+	return script.front();
+}
+string process::popInstruction(){
+	string ret = script.front();
+	script.erase(0);
+	return ret;
+}
+int process:: ioComplete(){
+	return complete;
 }

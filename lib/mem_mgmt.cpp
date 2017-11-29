@@ -9,9 +9,9 @@ memory::memory(){ //memory constructor
 	for(int i=0; i<SIZE; i++){
 		mainmem[i] = 0;
 	}
-	int used = getMemory();
+	int used = getTotalMemory();
 	int pidCounter = 0;
-	vector<process> processes[20]; //vector of processes
+	vector<process*> processes; //vector of processes
 }
 int memory::getTotalMemory(){
 	return SIZE;
@@ -26,10 +26,11 @@ int memory::getMemory(){ //returns amount of memory used
 		space++;
 		}
 	}
+	used = space;
 	return space;
 }
 
-process& memory::getProcess(int pid){
+process* memory::getProcess(int pid){
 	return processes[pid];
 }
 
@@ -41,4 +42,7 @@ void memory::createProcess(string filename){
 void memory::resetProcesses(){ //removes all processes
 	processes.clear();
 	pidCounter = 0;
+}
+int memory:: getPidCounter(){
+	return pidCounter;
 }

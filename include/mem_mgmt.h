@@ -10,6 +10,7 @@ class memory{
 		int getTotalMemory();
 		int getFreeMemory();
 		int getMemory();
+		int getPidCounter();
 		//process listProcesses()?
 		process& getProcess(int pid);
 		void createProcess(string filename);

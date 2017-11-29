@@ -18,11 +18,10 @@ class processor{
 
 	public:
 		processor();
+		int run(int,system*);
 		int load(process*);
 		int calculate(int);
 		process* yield(process*);
-		process* io(int);
-		int out(string);
 		bool isInteruptable();
 
 };

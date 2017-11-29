@@ -1,5 +1,6 @@
 //#include "../include/queue.h"
 #include "../include/cpu.h"
+#include <random>
 //#include "../include/system.h"
 using namespace std;
 
@@ -17,17 +18,74 @@ int processor::load(process* _new){
 		return 1;
 	}
 }
-int processor::calculate(int cycles){
-	current->run(cycles);
-	if(current->isCritical()){
-		preempt=false;
-		return 1;
+int processor::run(int cycles, system* sys){
+	string inst = current->nextInstruction();
+	if(inst.compare(0,9,"CALCULATE")==0){
+		if(current->currentLeft>0){
+			calculate(cycles);
+		}
+		else{
+			current->currentLeft=inst.substr(10);
+			calculate(cycles);
+		}
+	}
+
+	if(inst.compare("IO")==0){
+		if(!current.hasResources()){
+			std::default_random_engine generator;
+			std::uniform_int_distribution<int> distribution(25,50);
+			int ioCycles = distribution(generator);
+
+			current->currentLeft=ioCycles;
+
+			current->setState(process::state_t(WAIT));
+
+			sys->requestIO(current);
+			load(sys->next());
+
+			if(calculate(cycles,sys)==0){
+				sys->freeIO(current);
+			}
+		}
+		else{
+			calculate(cycles,sys);
+		}
+	}
+	if(inst.compare("YIELD")==0){
+		current->setState(process::state_t(READY));
+		sys->addReady(current);
+		load(sys->next());
+		run(cycles,sys);
+	}
+
+	if(inst.compare("OUT")==0){
+		cout << "Process Time Remaining: " << current->getTimeRemaining() << endl;
+		cout << "Process Time Elapsed: " << current->getTimeElapsed() << endl;
+		cout << "Process State: " << current->getState() << endl;
+		cout << "I/O Requests Completed: " << current->ioComplete() << endl;
+	}
+	if(inst.compare("**CRITSTART**")==0){
+		current->isCritical=true;
+	}
+	if(inst.compare("**CRITEND**")==0){
+		current->isCritical=false;	
 	}
 	else{
-		preempt=true;
-		return current->getTimeRemaining();
+		sys->kill(current,"invalid command");
 	}
+	return current->getTimeRemaining();
 }
+int processor::calculate(int cycles, system* sys){
+	int leftover = current->run(cycles)
+	if(leftover>0){
+		run(leftover);
+	}
+	return current->currentLeft();
+}
+
+
+
+
 process* processor::yield(process* _new){
 	if(preempt){
 		process* old = current;
@@ -40,16 +98,7 @@ process* processor::yield(process* _new){
 		return NULL;
 	}
 }
-process* processor::io(int cycles){
-	current->setState(process::state_t(WAIT));
-	//ask for new process
-	//system.requestIO(current, cycles);
-	return current;
-}
-int processor::out(string message){
-	cout << message;
-	return 0;
-}
+
 bool processor::isInteruptable(){
 	return preempt;
 }

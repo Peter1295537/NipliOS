@@ -29,10 +29,14 @@ class process{
 		int getRequests();
 		int run(int);
 	 	int setState(state_t);
-		bool isCritical();
+		int currentLeft;
+		int ioComplete();
+		bool isCritical;
 		string getName();
 		state_t getState();
 		bool hasResources();
+		string nextInstruction();
+		string popInstruction();
 
 	private:
 		vector<string> script;
@@ -42,13 +46,11 @@ class process{
 	 	int memory;
 	 	int priority;
 	 	int numrequests;
+		int complete;
 		string name;
 		state_t state;
 		string filename;
 		bool resources;
-		bool critical;
-		int critsection_start;
-		int critsection_end;
 
 
 
