@@ -11,7 +11,7 @@ void rr::swap(queue* x, processor* cpu, memory* main) {
 	int tmp;
 	process* input;
 	tmp=x->remove();
-	input=&(main->getProcess(tmp));	
+	input=main->getProcess(tmp);	
 	cpu->load(input);
 	cpu->calculate(quantum);
 	cpu->yield(input);
@@ -25,7 +25,7 @@ void rr::fcfs(queue* x, processor* cpu, memory* main) {
         int tmp;
         process* input;
         tmp=x->current();
-        input=&(main->getProcess(tmp));
+        input=main->getProcess(tmp);
         cpu->load(input);
         cpu->calculate(100);
         cpu->yield(input);

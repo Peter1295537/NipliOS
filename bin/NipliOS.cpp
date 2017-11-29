@@ -8,7 +8,7 @@
 #include <iostream>
 #include <pthread.h>
 #include <semaphore.h>
-#include "../include/rr.h"
+#include "../include/system.h"
 
 
 sem_t semaphore;
@@ -17,7 +17,7 @@ void signal_handler(int no) {
 }
 
 
-struct cpuThreadParams {
+/*struct cpuThreadParams {
 	queue* one;
         queue* two;
         queue* three;
@@ -33,10 +33,10 @@ struct cpuThreadParams {
 	//EXE Flag
 	int* start;
 	
-};
+};*/
 
 
-void *cpu_processing(void *input) {
+/*void *cpu_processing(void *input) {
         
 	struct cpuThreadParams* params=(cpuThreadParams*)input;        
 	int tmp;
@@ -92,13 +92,13 @@ void *cpu_processing(void *input) {
 		turn_counter++;
 		sleep(1);
 	}
-}
+}*/
 
-void resetQueue(queue* input) {
+/*void resetQueue(queue* input) {
 	while(input->current()>-1){
 		input->remove();
 	}
-}
+}*/
 
 
 
@@ -107,32 +107,32 @@ int main() {
 	char command[50];
 	char *token;
 	
-	struct cpuThreadParams params;
+	//struct cpuThreadParams params;
 	
 	//Ready and wait queues for CPU
-	queue ready_queue;
-	queue fore_ground;
-	queue back_ground;
+	//queue ready_queue;
+	//queue fore_ground;
+	//queue back_ground;
 
-	queue wait_queue;
-	queue io_queue;
-	int counter=0;	
+	//queue wait_queue;
+	//queue io_queue;
+	//int counter=0;	
 	
 	//Memory
-	memory mainmem;
+	//memory mainmem;
 	
 	//Scheduler
-	rr ready(25);
-	rr fore(50);
+	//rr ready(25);
+	//rr fore(50);
 	
 
 	signal(SIGINT, signal_handler);
-	int start=0;
+	//int start=0;
 	
 	//Threading Struct Intializations
-        sem_post(&semaphore);
+        //sem_post(&semaphore);
 	
-	params.one=&ready_queue;
+	/*params.one=&ready_queue;
 	params.two=&fore_ground;
 	params.three=&back_ground;
 	params.main=&mainmem;
@@ -145,7 +145,7 @@ int main() {
 	int cpu1= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
 	int cpu2= pthread_create(&threads[2], NULL, cpu_processing, (void*) &params);
         int cpu3= pthread_create(&threads[3], NULL, cpu_processing, (void*) &params);
-        int cpu4= pthread_create(&threads[4], NULL, cpu_processing, (void*) &params);
+        int cpu4= pthread_create(&threads[4], NULL, cpu_processing, (void*) &params);*/
 
 		
 	while(1) {
@@ -156,17 +156,18 @@ int main() {
 		token=strtok(command, " ");
 
 		if (strncmp(token, "PROC",4)==0) {
-			sem_wait(&semaphore);
+			/*sem_wait(&semaphore);
 			printf("Processes unfinished queue one: %d\n", ready_queue.getSize());
 			printf("Processes unfinished queue two: %d\n", fore_ground.getSize());
 			printf("Processes unfinished queue three: %d\n", back_ground.getSize());
 			printf("Processes unfinished wait queue: %d\n", wait_queue.getSize());
 			printf("Processes unfinished io queue: %d\n", io_queue.getSize());
-        		sem_post(&semaphore);
+			cout << "PROC" << endl;
+        		sem_post(&semaphore);*/
 
 		}
 		else if (strncmp(token, "LOAD",4)==0) {
-			string filename;
+			/*string filename;
                         sem_wait(&semaphore);
                         cout<<"Select process to load: "<< endl;
                         cin>>filename;
@@ -174,17 +175,18 @@ int main() {
                         ready_queue.insert(counter);
                         sem_post(&semaphore);
 
-                        counter++;
+                        counter++;*/
 
 		}
 		else if (strncmp(token, "MEM",3)==0) {
-	
+			/*cout << "MEM" << endl;	
 			sem_wait(&semaphore);
 			printf("Total Memory Used: %d MB\n", mainmem.getMemory());
-			sem_post(&semaphore);
+			sem_post(&semaphore);*/
 		}
 		else if (strncmp(token, "RESET",5)==0) {
-			sem_wait(&semaphore);
+			/*sem_wait(&semaphore);
+			cout << "RESET" << endl;
 			start=0;
 			mainmem.resetProcesses();
 			resetQueue(&ready_queue);
@@ -194,15 +196,15 @@ int main() {
 			resetQueue(&io_queue);
 			printf("System Reset, all processes terminated \n");
 			sem_post(&semaphore);
-			counter=0;
+			counter=0;*/
 		}
 		else if (strncmp(token, "EXE", 3)==0) {
-			sem_wait(&semaphore);
+			/*sem_wait(&semaphore);
 			printf("Executing loaded programs");
 			start=1;
 			sem_post(&semaphore);
 
-			counter++;	
+			counter++;	*/
 		}
  		   else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
 			raise(SIGKILL);

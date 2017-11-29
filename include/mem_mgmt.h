@@ -1,3 +1,5 @@
+#ifndef MEM_MGMT_H
+#define MEM_MGMT_H
 #include<stdlib.h>
 #include<iostream>
 #include<vector>
@@ -12,7 +14,7 @@ class memory{
 		int getMemory();
 		int getPidCounter();
 		//process listProcesses()?
-		process& getProcess(int pid);
+		process* getProcess(int pid);
 		void createProcess(string filename);
 		void resetProcesses(); 
 		//void allocateProcess();
@@ -23,3 +25,4 @@ class memory{
 		vector<process> processes;
 		bool mainmem[];
 };
+#endif

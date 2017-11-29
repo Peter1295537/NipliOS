@@ -1,5 +1,5 @@
 #include "../include/mem_mgmt.h"
-#include "../include/process_class.h"
+//#include "../include/process_class.h"
 #define SIZE 4096
 using namespace std;
 
@@ -31,7 +31,7 @@ int memory::getMemory(){ //returns amount of memory used
 }
 
 process* memory::getProcess(int pid){
-	return processes[pid];
+	return &processes[pid];
 }
 
 void memory::createProcess(string filename){
