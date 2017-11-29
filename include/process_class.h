@@ -1,13 +1,10 @@
-#ifndef PROCESS_H
-#define PROCESS_H
-
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
 #include <vector>
-
 #include <errno.h>
+
 using namespace std;
 class process{
 
@@ -55,4 +52,4 @@ class process{
 
 
 };
-#endif
+#define PROCESS_H

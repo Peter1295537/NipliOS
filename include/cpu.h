@@ -1,8 +1,12 @@
-//#ifndef CPU_H
-//#define CPU_H
-//#include <stdio.h>
+#ifndef CPU_H
+#ifndef PROCESS_H
 #include "process_class.h"
-#include "system.h"
+#endif
+
+//#ifndef SYSTEM_H
+//#endif
+class system;
+
 using namespace std;
 enum state_t{
 	NEW,
@@ -27,6 +31,6 @@ class processor{
 		bool isInteruptable();
 
 };
-
-
-//#endif
+#define CPU_H
+//#include "system.h"
+#endif

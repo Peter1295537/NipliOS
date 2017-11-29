@@ -1,9 +1,9 @@
-#ifndef MEM_MGMT_H
-#define MEM_MGMT_H
 #include<stdlib.h>
 #include<iostream>
 #include<vector>
+#ifndef PROCESS_H
 #include "process_class.h"
+#endif
 using namespace std;
 
 class memory{
@@ -25,4 +25,4 @@ class memory{
 		vector<process> processes;
 		bool mainmem[];
 };
-#endif
+#define MEM_H

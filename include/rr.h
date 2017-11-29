@@ -1,10 +1,17 @@
-#ifndef RR_H
-#define RR_H
 //#include <stdlib.h>
+#ifndef QUEUE_H
 #include "queue.h"
-#include "mem_mgmt.h"
-#include "cpu.h"
+#endif
 
+#ifndef MEM_H
+#include "mem_mgmt.h"
+#endif
+
+#ifndef CPU_H
+#include "cpu.h"
+#endif
+
+class processor;
 class rr{
 	public:
 		int quantum;
@@ -15,4 +22,4 @@ class rr{
 		
 				
 };
-#endif
+#define RR_H
