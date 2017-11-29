@@ -1,5 +1,3 @@
-#ifndef QUEUE_H
-#define QUEUE_H
 #include<stdlib.h>
 #include<iostream>
 
@@ -26,6 +24,5 @@ class queue {
                 queue();
 
 };
+#define QUEUE_H
 
-
-#endif
