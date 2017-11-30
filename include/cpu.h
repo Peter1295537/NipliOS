@@ -20,7 +20,7 @@ class processor{
 
 	public:
 		processor();
-		int run(int);
+		int run(int,io_device_mgr*);
 		int load(process*);
 		int calculate(int);
 		process* yield(process*);

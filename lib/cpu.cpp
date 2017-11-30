@@ -16,7 +16,7 @@ int processor::load(process* _new){
 		return 1;
 	}
 }
-int processor::run(int cycles){
+int processor::run(int cycles,io_device_mgr* iodm){
 	string inst = current->nextInstruction();
 	if(inst.compare(0,9,"CALCULATE")==0){
 		if(current->currentLeft>0){
@@ -37,10 +37,10 @@ int processor::run(int cycles){
 			current->currentLeft=ioCycles;
 
 			current->setState(process::state_t(WAIT));
+			iodm->requestIO(current);
 
-				////////send to blocked queue////////////
 			if(calculate(cycles)==0){
-				//////io complete////////////
+				iodm->freeIO(current);
 			}
 		}
 		else{
@@ -64,7 +64,7 @@ int processor::run(int cycles){
 		current->isCritical=false;	
 	}
 	else{
-		////////////error/////////////////
+		return -1;
 	}
 	return current->getTimeRemaining();
 }
