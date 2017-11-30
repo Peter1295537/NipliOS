@@ -73,14 +73,14 @@ void *cpu_processing(void *input) {
                         	}
                 	}
 			if (params->one->current()!=-1) {
-				if (params->main->getProcess((params->one->current())).getTimeElapsed()>2500) {
+				if (params->main->getProcess((params->one->current()))->getTimeElapsed()>2500) {
 					tmp=params->one->remove();
                				params->two->insert(tmp);
        				}
 			}
       	 	
 			if (params->two->current()!=-1) {	
-				if (params->main->getProcess((params->two->current())).getTimeElapsed()>5000) {
+				if (params->main->getProcess((params->two->current()))->getTimeElapsed()>5000) {
 					tmp=params->two->remove();
         	       			params->three->insert(tmp);
       				}
@@ -119,7 +119,7 @@ int main() {
 	queue io_queue;
 	int counter=0;	
 	
-	Memory
+	//Memory
 	memory mainmem;
 
 	//Scheduler

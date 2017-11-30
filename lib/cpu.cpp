@@ -69,11 +69,11 @@ int processor::run(int cycles){
 	return current->getTimeRemaining();
 }
 int processor::calculate(int cycles){
-	int leftover = current->run(cycles)
+	int leftover = current->run(cycles);
 	if(leftover>0){
 		run(leftover);
 	}
-	return current->currentLeft();
+	return current->currentLeft;
 }
 
 
