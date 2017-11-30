@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = NipliOS
+TARGET = NipliOSGUI
 
 QT= core gui
 
