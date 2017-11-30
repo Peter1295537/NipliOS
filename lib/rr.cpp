@@ -7,13 +7,13 @@ rr::rr(int q) {
 	quantum=q;
 }
 
-void rr::swap(queue* x, processor* cpu, memory* main) {
+void rr::swap(queue* x, processor* cpu, memory* main,io_device_mgr* iodm) {
 	int tmp;
 	process* input;
 	tmp=x->remove();
 	input=main->getProcess(tmp);	
 	cpu->load(input);
-	cpu->calculate(quantum);
+	cpu->run(quantum,iodm);
 	cpu->yield(input);
 	if (input->getTimeRemaining()>0) {
                         x->insert(tmp);
@@ -21,13 +21,13 @@ void rr::swap(queue* x, processor* cpu, memory* main) {
 }
 
 
-void rr::fcfs(queue* x, processor* cpu, memory* main) {
+void rr::fcfs(queue* x, processor* cpu, memory* main,io_device_mgr* iodm) {
         int tmp;
         process* input;
         tmp=x->current();
         input=main->getProcess(tmp);
         cpu->load(input);
-        cpu->calculate(100);
+        cpu->run(100,iodm);
         cpu->yield(input);
 
         if (input->getTimeRemaining()<=0) {

@@ -16,20 +16,20 @@ int processor::load(process* _new){
 		return 1;
 	}
 }
-int processor::run(int cycles){
+int processor::run(int cycles,io_device_mgr* iodm){
 	string inst = current->nextInstruction();
 	if(inst.compare(0,9,"CALCULATE")==0){
 		if(current->currentLeft>0){
-			calculate(cycles);
+			calculate(cycles,iodm);
 		}
 		else{
 			current->currentLeft=stoi(inst.substr(10));
-			calculate(cycles);
+			calculate(cycles,iodm);
 		}
 	}
 
 	if(inst.compare("IO")==0){
-		if(!current->hasResources()){
+		if(!current->hasResources){
 			std::default_random_engine generator;
 			std::uniform_int_distribution<int> distribution(25,50);
 			int ioCycles = distribution(generator);
@@ -37,14 +37,14 @@ int processor::run(int cycles){
 			current->currentLeft=ioCycles;
 
 			current->setState(process::state_t(WAIT));
+			iodm->requestIO(current);
 
-				////////send to blocked queue////////////
-			if(calculate(cycles)==0){
-				//////io complete////////////
+			if(calculate(cycles,iodm)==0){
+				iodm->freeIO(current);
 			}
 		}
 		else{
-			calculate(cycles);
+			calculate(cycles,iodm);
 		}
 	}
 	if(inst.compare("YIELD")==0){
@@ -64,14 +64,14 @@ int processor::run(int cycles){
 		current->isCritical=false;	
 	}
 	else{
-		////////////error/////////////////
+		return -1;
 	}
 	return current->getTimeRemaining();
 }
-int processor::calculate(int cycles){
+int processor::calculate(int cycles,io_device_mgr* iodm){
 	int leftover = current->run(cycles);
 	if(leftover>0){
-		run(leftover);
+		run(leftover,iodm);
 	}
 	return current->currentLeft;
 }

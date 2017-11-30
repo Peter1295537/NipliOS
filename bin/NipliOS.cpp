@@ -10,6 +10,7 @@
 #include <semaphore.h>
 
 #include "../include/rr.h"
+//#include "../include/iodevice.h"
 
 
 sem_t semaphore;
@@ -31,6 +32,9 @@ struct cpuThreadParams {
         rr* first;
         rr* second;
 
+	//io device manager
+	io_device_mgr* iodm;
+
 	//EXE Flag
 	int* start;
 	
@@ -51,25 +55,25 @@ void *cpu_processing(void *input) {
 		flag=*params->start;
 		if (flag==1) {
 			if (turn_counter<7 && params->one->current()>-1) {
-       	                	params->first->swap(params->one,cpu, params->main);
+       	                	params->first->swap(params->one,cpu, params->main, params->iodm);
                		}
 
                		else if (turn_counter>=7 && turn_counter<=8) {
 				if (params->two->current()>-1) {
-                       			params->second->swap(params->two, cpu, params->main);
+                       			params->second->swap(params->two, cpu, params->main, params->iodm);
 				}
        	        	}
                		else if (turn_counter==9 && params->three->current()>-1) {
-                       		params->first->fcfs(params->three,cpu, params->main);
+                       		params->first->fcfs(params->three,cpu, params->main, params->iodm);
                		}
 			if (turn_counter<7 && params->one->current()==-1) {
 				if (params->two->current()>-1) {
-					params->second->swap(params->two, cpu, params->main);
+					params->second->swap(params->two, cpu, params->main, params->iodm);
 				}
 			}
 			if (turn_counter<9 && params->one->current()==-1) {
                         	if (params->two->current()==-1 && params->three->current()>-1) {
-                               		params->first->fcfs(params->three,cpu, params->main);
+                               		params->first->fcfs(params->three,cpu, params->main, params->iodm);
                         	}
                 	}
 			if (params->one->current()!=-1) {
@@ -125,6 +129,9 @@ int main() {
 	//Scheduler
 	rr ready(25);
 	rr fore(50);
+
+	//io device manager
+	io_device_mgr iodm;
 	
 
 	signal(SIGINT, signal_handler);
@@ -140,6 +147,7 @@ int main() {
 	params.first=&ready;
 	params.second=&fore;
 	params.start=&start;
+	params.iodm=&iodm;
 	
 
 	pthread_t threads[4];
