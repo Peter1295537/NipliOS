@@ -1,11 +1,8 @@
 #ifndef CPU_H
+
 #ifndef PROCESS_H
 #include "process_class.h"
 #endif
-
-//#ifndef SYSTEM_H
-//#endif
-class system;
 
 using namespace std;
 enum state_t{
@@ -20,11 +17,10 @@ class processor{
 		process* current;
 		int numcores;
 		bool preempt;
-		system* sys;
 
 	public:
 		processor();
-		int run(int, system*);
+		int run(int);
 		int load(process*);
 		int calculate(int);
 		process* yield(process*);
@@ -32,5 +28,4 @@ class processor{
 
 };
 #define CPU_H
-//#include "system.h"
 #endif

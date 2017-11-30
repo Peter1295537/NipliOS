@@ -1,8 +1,6 @@
 //#include "../include/queue.h"
 #include "../include/cpu.h"
 #include <random>
-//#include "../include/system.h"
-using namespace std;
 
 processor::processor(){
 	preempt=true;
@@ -18,7 +16,7 @@ int processor::load(process* _new){
 		return 1;
 	}
 }
-int processor::run(int cycles, system* sys){
+int processor::run(int cycles){
 	string inst = current->nextInstruction();
 	if(inst.compare(0,9,"CALCULATE")==0){
 		if(current->currentLeft>0){
@@ -40,22 +38,17 @@ int processor::run(int cycles, system* sys){
 
 			current->setState(process::state_t(WAIT));
 
-			sys->requestIO(current);
-			//load(sys->next());
-
-			if(calculate(cycles,sys)==0){
-				sys->freeIO(current);
+				////////send to blocked queue////////////
+			if(calculate(cycles)==0){
+				//////io complete////////////
 			}
 		}
 		else{
-			calculate(cycles,sys);
+			calculate(cycles);
 		}
 	}
 	if(inst.compare("YIELD")==0){
 		current->setState(process::state_t(READY));
-		//sys->addReady(current);
-		//load(sys->next());
-		//run(cycles,sys);
 	}
 
 	if(inst.compare("OUT")==0){
@@ -71,11 +64,11 @@ int processor::run(int cycles, system* sys){
 		current->isCritical=false;	
 	}
 	else{
-		sys->kill(current,"invalid command");
+		////////////error/////////////////
 	}
 	return current->getTimeRemaining();
 }
-int processor::calculate(int cycles, system* sys){
+int processor::calculate(int cycles){
 	int leftover = current->run(cycles)
 	if(leftover>0){
 		run(leftover);
