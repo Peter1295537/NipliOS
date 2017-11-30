@@ -41,7 +41,6 @@ int queue::remove() {
 		else {
 			front=tmp->next;
 			output=tmp->data;
-			free(tmp);
 			return output;
 		}
 	}

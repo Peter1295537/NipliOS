@@ -1,6 +1,7 @@
 //#include "../include/queue.h"
 #include "../include/cpu.h"
-#include <random>
+#include <cstdlib>
+#include <ctime>
 
 processor::processor(){
 	preempt=true;
@@ -17,6 +18,7 @@ int processor::load(process* _new){
 	}
 }
 int processor::run(int cycles,io_device_mgr* iodm){
+//	cout << current->getTimeRemaining() << endl;
 	string inst = current->nextInstruction();
 	if(inst.compare(0,9,"CALCULATE")==0){
 		if(current->currentLeft>0){
@@ -28,11 +30,12 @@ int processor::run(int cycles,io_device_mgr* iodm){
 		}
 	}
 
-	if(inst.compare("IO")==0){
+	else if(inst.compare("IO")==0){
 		if(!current->hasResources){
-			std::default_random_engine generator;
-			std::uniform_int_distribution<int> distribution(25,50);
-			int ioCycles = distribution(generator);
+			srand(time(NULL));
+			int ioCycles = rand() % 26 +25;
+
+//			cout << ioCycles << endl;
 
 			current->currentLeft=ioCycles;
 
@@ -47,25 +50,29 @@ int processor::run(int cycles,io_device_mgr* iodm){
 			calculate(cycles,iodm);
 		}
 	}
-	if(inst.compare("YIELD")==0){
+	else if(inst.compare("YIELD")==0){
 		current->setState(process::state_t(READY));
+		current->popInstruction();
 	}
 
-	if(inst.compare("OUT")==0){
+	else if(inst.compare("OUT")==0){
 		cout << "Process Time Remaining: " << current->getTimeRemaining() << endl;
 		cout << "Process Time Elapsed: " << current->getTimeElapsed() << endl;
 		cout << "Process State: " << current->getState() << endl;
 		cout << "I/O Requests Completed: " << current->ioComplete() << endl;
+		current->popInstruction();
+
 	}
-	if(inst.compare("**CRITSTART**")==0){
+	else if(inst.compare("**CRITSTART**")==0){
 		current->isCritical=true;
 	}
-	if(inst.compare("**CRITEND**")==0){
+	else if(inst.compare("**CRITEND**")==0){
 		current->isCritical=false;	
 	}
-	else{
+	else {
 		return -1;
 	}
+
 	return current->getTimeRemaining();
 }
 int processor::calculate(int cycles,io_device_mgr* iodm){
@@ -78,19 +85,23 @@ int processor::calculate(int cycles,io_device_mgr* iodm){
 
 
 
+/*
 
 process* processor::yield(process* _new){
 	if(preempt){
 		process* old = current;
 		current=_new;
+		load(_new);
+		cout<<current->getState();
+		cout<<old->getState();
 		old->setState(process::state_t(READY));
-		current->setState(process::state_t(RUN));
 		return old;
 	}
 	else{
 		return NULL;
 	}
 }
+*/
 
 bool processor::isInteruptable(){
 	return preempt;

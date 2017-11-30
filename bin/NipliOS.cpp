@@ -92,6 +92,7 @@ void *cpu_processing(void *input) {
 			if (turn_counter>9) {
 				turn_counter=0;
 			}
+
 		}
 		sem_post(&semaphore);
 		turn_counter++;

@@ -14,9 +14,9 @@ void rr::swap(queue* x, processor* cpu, memory* main,io_device_mgr* iodm) {
 	input=main->getProcess(tmp);	
 	cpu->load(input);
 	cpu->run(quantum,iodm);
-	cpu->yield(input);
-	if (input->getTimeRemaining()>0) {
-                        x->insert(tmp);
+	if (input->getTimeRemaining()>0 && input->getState()!=process::state_t(WAIT)) {
+                input->setState(process::state_t(READY));        
+		x->insert(tmp);
         }
 }
 
@@ -28,10 +28,9 @@ void rr::fcfs(queue* x, processor* cpu, memory* main,io_device_mgr* iodm) {
         input=main->getProcess(tmp);
         cpu->load(input);
         cpu->run(100,iodm);
-        cpu->yield(input);
 
         if (input->getTimeRemaining()<=0) {
-                        x->remove();
+                x->remove();
         } 
 
 }

@@ -25,8 +25,8 @@ makeOS:
 	g++ lib/$(MEM).cpp lib/$(CLASS).cpp lib/$(QUEUE).cpp lib/$(CPU).cpp lib/$(IO).cpp lib/$(RR).cpp bin/$(OS).cpp -lxml2 $(THREAD) $(FLAGS) $(SAN_FLAGS) -ggdb -o bin/$(OS)
 
 clean:
-	rm lib/*.o 
-	rm bin/classtest
-	rm bin/cputest
 	rm bin/$(OS)
 	rm a.out
+	rm bin/classtest
+	rm bin/cputest
+	rm lib/*.o 
