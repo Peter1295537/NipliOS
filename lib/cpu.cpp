@@ -34,6 +34,9 @@ int processor::run(int cycles,io_device_mgr* iodm){
 		if(!current->hasResources){
 			srand(time(NULL));
 			int ioCycles = rand() % 26 +25;
+			
+			srand(time(NULL));
+			current->request=rand() % 5 + 1;
 
 //			cout << ioCycles << endl;
 
@@ -78,7 +81,12 @@ int processor::run(int cycles,io_device_mgr* iodm){
 int processor::calculate(int cycles,io_device_mgr* iodm){
 	int leftover = current->run(cycles);
 	if(leftover>0){
-		run(leftover,iodm);
+		if(current->getTimeRemaining<=0){
+			return 0;
+		}
+		else{
+			run(leftover,iodm);
+		}
 	}
 	return current->currentLeft;
 }

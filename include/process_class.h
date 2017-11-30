@@ -18,6 +18,8 @@ class process{
 		};
 		process(string,int);
 		process();
+		int request;
+		string buff;
 		int getPID();
 	 	int getTimeElapsed();
 		int getTimeRemaining();
@@ -47,7 +49,6 @@ class process{
 		string name;
 		state_t state;
 		string filename;
-		//bool resources;
 
 
 
