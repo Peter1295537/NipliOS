@@ -37,6 +37,10 @@ struct cpuThreadParams {
 
 	//EXE Flag
 	int* start;
+
+	//Number of Cycles
+	int* num_cycles;
+	int cycles;
 	
 };
 
@@ -47,53 +51,94 @@ void *cpu_processing(void *input) {
 	int tmp;
 	int turn_counter=0;
 	int flag;
+	int max;
+	
+	int cycles;
+	int begin;
+	int end;
+	
 	processor processor1;
 	processor* cpu=&processor1;
+	process* placeholder;
 	while (1) {
-			
+		cycles=params->cycles;	
 		sem_wait(&semaphore);			
 		flag=*params->start;
+		max=*params->num_cycles;
+		if (flag==0) {
+			params->cycles=0;
+		}
 		if (flag==1) {
-			if (turn_counter<7 && params->one->current()>-1) {
-       	                	params->first->swap(params->one,cpu, params->main, params->iodm);
-               		}
+			if (cycles<max) {	
+				if (turn_counter<7 && params->one->current()>-1) {
+					placeholder=params->main->getProcess((params->one->current()));
+					begin=placeholder->getTimeRemaining();
+       	                		params->first->swap(params->one,cpu, params->main, params->iodm);
+					end=placeholder->getTimeRemaining();
+					cycles=cycles+(begin-end);
+               			}
 
-               		else if (turn_counter>=7 && turn_counter<=8) {
-				if (params->two->current()>-1) {
-                       			params->second->swap(params->two, cpu, params->main, params->iodm);
+               			else if (turn_counter>=7 && turn_counter<=8) {
+					if (params->two->current()>-1) {
+						placeholder=params->main->getProcess((params->two->current()));
+	                                        begin=placeholder->getTimeRemaining();
+                       				params->second->swap(params->two, cpu, params->main, params->iodm);
+						end=placeholder->getTimeRemaining();
+	                                        cycles=cycles+(begin-end);
+					}
+       	        		}
+               			else if (turn_counter==9 && params->three->current()>-1) {
+					placeholder=params->main->getProcess((params->three->current()));
+                                        begin=placeholder->getTimeRemaining();	
+                       			params->first->fcfs(params->three,cpu, params->main, params->iodm);
+					end=placeholder->getTimeRemaining();
+                                        cycles=cycles+(begin-end);
+
+               			}
+				if (turn_counter<7 && params->one->current()==-1) {
+					if (params->two->current()>-1) {
+        	                                placeholder=params->main->getProcess((params->two->current()));
+	                                        begin=placeholder->getTimeRemaining();
+						params->second->swap(params->two, cpu, params->main, params->iodm);
+						end=placeholder->getTimeRemaining();
+	                                        cycles=cycles+(begin-end);
+					}
 				}
-       	        	}
-               		else if (turn_counter==9 && params->three->current()>-1) {
-                       		params->first->fcfs(params->three,cpu, params->main, params->iodm);
-               		}
-			if (turn_counter<7 && params->one->current()==-1) {
-				if (params->two->current()>-1) {
-					params->second->swap(params->two, cpu, params->main, params->iodm);
+				if (turn_counter<9 && params->one->current()==-1) {
+                        		if (params->two->current()==-1 && params->three->current()>-1) {         
+                                                placeholder=params->main->getProcess((params->two->current())); 
+						begin=placeholder->getTimeRemaining();
+						params->first->fcfs(params->three,cpu, params->main, params->iodm);
+                                                end=placeholder->getTimeRemaining();
+                                                cycles=cycles+(begin-end);
+
+                        		}
+                		}
+				if (params->one->current()!=-1) {
+					if (params->main->getProcess((params->one->current()))->getTimeElapsed()>2500) {
+						tmp=params->one->remove();
+               					params->two->insert(tmp);
+       					}
 				}
-			}
-			if (turn_counter<9 && params->one->current()==-1) {
-                        	if (params->two->current()==-1 && params->three->current()>-1) {
-                               		params->first->fcfs(params->three,cpu, params->main, params->iodm);
-                        	}
-                	}
-			if (params->one->current()!=-1) {
-				if (params->main->getProcess((params->one->current()))->getTimeElapsed()>2500) {
-					tmp=params->one->remove();
-               				params->two->insert(tmp);
-       				}
-			}
-      	 	
-			if (params->two->current()!=-1) {	
-				if (params->main->getProcess((params->two->current()))->getTimeElapsed()>5000) {
-					tmp=params->two->remove();
-        	       			params->three->insert(tmp);
-      				}
-			}
-			if (turn_counter>9) {
-				turn_counter=0;
+				if (params->two->current()!=-1) {	
+					if (params->main->getProcess((params->two->current()))->getTimeElapsed()>5000) {
+						tmp=params->two->remove();
+        	       				params->three->insert(tmp);
+      					}
+				}
+                                if (params->one->current()==-1 && params->two->current()==-1) {
+					if (params->three->current()==-1) {	
+						cycles++;
+					}
+				}
+
+				if (turn_counter>9) {
+					turn_counter=0;
+				}
 			}
 
 		}
+		params->cycles=cycles;
 		sem_post(&semaphore);
 		turn_counter++;
 		sleep(1);
@@ -109,6 +154,7 @@ void resetQueue(queue* input) {
 
 
 int main() {
+
 	//Variables for input
 	char command[50];
 	char *token;
@@ -138,6 +184,9 @@ int main() {
 	signal(SIGINT, signal_handler);
 	int start=0;
 	
+	int num_cycles=0;
+	int cycles=0;
+	
 	//Threading Struct Intializations
         sem_post(&semaphore);
 	
@@ -149,6 +198,8 @@ int main() {
 	params.second=&fore;
 	params.start=&start;
 	params.iodm=&iodm;
+	params.num_cycles=&num_cycles;
+	params.cycles=cycles;
 	
 
 	pthread_t threads[4];
@@ -195,6 +246,8 @@ int main() {
 		else if (strncmp(token, "reset", 5)==0 || strncmp(token, "RESET",5)==0) {
 			sem_wait(&semaphore);
 			start=0;
+			num_cycles=0;
+			params.cycles=0;
 			mainmem.resetProcesses();
 			resetQueue(&ready_queue);
 			resetQueue(&fore_ground);
@@ -206,9 +259,13 @@ int main() {
 			counter=0;
 		}
 		else if (strncmp(token, "exe",3)==0 ||strncmp(token, "EXE", 3)==0) {
+			int tmp;
 			sem_wait(&semaphore);
+			cout<<"Enter number of cycles:"<< endl;
+			cin>>tmp;
+			num_cycles=num_cycles+tmp;
 			printf("Executing loaded programs");
-			start=1;
+			start=1;	
 			sem_post(&semaphore);
 	
 		}
