@@ -1,9 +1,12 @@
-#include<stdlib.h>
-#include<iostream>
-#include<vector>
-#ifndef PROCESS_H
+#include <stdlib.h>
+#include <iostream>
+#include <vector>
+#include <bitset>
+#ifndef MEM_H
+#define MEM_H
+//#ifndef PROCESS_H
 #include "process_class.h"
-#endif
+#define SIZE 4096
 using namespace std;
 
 class memory{
@@ -11,18 +14,17 @@ class memory{
 		memory();
 		int getTotalMemory();
 		int getFreeMemory();
-		int getMemory();
+		int getUsedMemory();
 		int getPidCounter();
-		//process listProcesses()?
 		process* getProcess(int pid);
 		void createProcess(string filename);
 		void resetProcesses(); 
-		//void allocateProcess();
+		int getNumProcesses();
 	private:
-		int used;
 		int pidCounter;
+		int procmem;
 		process tmp;
 		vector<process> processes;
-		bool mainmem[];
+		bitset<SIZE> mem;
 };
-#define MEM_H
+#endif

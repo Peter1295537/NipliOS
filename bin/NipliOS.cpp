@@ -189,7 +189,7 @@ int main() {
 		}
 		else if (strncmp(token, "mem",3)==0 || strncmp(token, "MEM",3)==0) {
 			sem_wait(&semaphore);
-			printf("Total Memory Used: %d MB\n", mainmem.getMemory());
+			printf("Total Memory Used: %d MB\n", mainmem.getUsedMemory());
 			sem_post(&semaphore);
 		}
 		else if (strncmp(token, "reset", 5)==0 || strncmp(token, "RESET",5)==0) {

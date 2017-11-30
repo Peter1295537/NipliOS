@@ -4,12 +4,7 @@
 using namespace std;
 
 memory::memory(){ //memory constructor
-	bool mainmem[SIZE] = {};
-	// set all values to false
-	for(int i=0; i<SIZE; i++){
-		mainmem[i] = 0;
-	}
-	int used = getTotalMemory();
+	bitset<SIZE> mem; 
 	int pidCounter = 0;
 	vector<process*> processes; //vector of processes
 }
@@ -17,17 +12,10 @@ int memory::getTotalMemory(){
 	return SIZE;
 }
 int memory::getFreeMemory(){ //returns amount of free memory
-	return SIZE - used;
+	return SIZE - getUsedMemory();
 } 
-int memory::getMemory(){ //returns amount of memory used 
-	int space = 0;
-	for(int i = 0; i < SIZE; i++){
-		if(mainmem[i] == true){
-		space++;
-		}
-	}
-	used = space;
-	return space;
+int memory::getUsedMemory(){ //returns amount of memory used 
+	return mem.count();
 }
 
 process* memory::getProcess(int pid){
@@ -35,14 +23,26 @@ process* memory::getProcess(int pid){
 }
 
 void memory::createProcess(string filename){
-	process tmp(filename, pidCounter); 
+	process tmp(filename, pidCounter);
+	int procmem = tmp.getMemory();
+	if(procmem <= getFreeMemory()){ 
 	processes.push_back(tmp); //adds tmp process to end of vector
 	pidCounter++;
+	}
+	else{
+	cout<<"Insufficient memory"<<endl;
+	}
 } 
 void memory::resetProcesses(){ //removes all processes
+	mem.reset(); //set all bits to 0
 	processes.clear();
 	pidCounter = 0;
 }
-int memory:: getPidCounter(){
+int memory::getPidCounter(){
 	return pidCounter;
+}
+
+int memory::getNumProcesses(){
+	return processes.size();
+
 }
