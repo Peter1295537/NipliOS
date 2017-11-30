@@ -163,7 +163,6 @@ int main() {
 			printf("Processes unfinished queue three: %d\n", back_ground.getSize());
 			printf("Processes unfinished wait queue: %d\n", wait_queue.getSize());
 			printf("Processes unfinished io queue: %d\n", io_queue.getSize());
-			cout << "PROC" << endl;
         		sem_post(&semaphore);
 
 		}
@@ -180,14 +179,12 @@ int main() {
 
 		}
 		else if (strncmp(token, "MEM",3)==0) {
-			cout << "MEM" << endl;	
 			sem_wait(&semaphore);
 			printf("Total Memory Used: %d MB\n", mainmem.getMemory());
 			sem_post(&semaphore);
 		}
 		else if (strncmp(token, "RESET",5)==0) {
 			sem_wait(&semaphore);
-			cout << "RESET" << endl;
 			start=0;
 			mainmem.resetProcesses();
 			resetQueue(&ready_queue);
@@ -204,8 +201,7 @@ int main() {
 			printf("Executing loaded programs");
 			start=1;
 			sem_post(&semaphore);
-
-			counter++;	
+	
 		}
  		   else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
 			raise(SIGKILL);

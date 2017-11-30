@@ -3,6 +3,8 @@
 #include <QGridLayout>
 #include <QLineEdit>
 #include <QTextEdit>
+#include <QLabel>
+#include <QGroupBox>
 
 int main(int argc, char **argv)
 {
@@ -20,18 +22,35 @@ int main(int argc, char **argv)
 
      QTextEdit *txtLog = new QTextEdit;
 
-     layout->addWidget(button1);
-     layout->addWidget(button2);
-     layout->addWidget(button3);
-     layout->addWidget(button4);
-     layout->addWidget(button5);
+     QLabel *m_label = new QLabel();
+     m_label->setText(QString::fromUtf8("Number of Process: "));
+
+     QGroupBox *horizontalGroupBox = new QGroupBox;
+     QHBoxLayout *layoutH = new QHBoxLayout;
+
+     horizontalGroupBox->setLayout(layoutH);
+     layoutH->addWidget(txtLog);
+
+     QGroupBox *side = new QGroupBox;
+     QVBoxLayout *sidebar = new QVBoxLayout;
+
+     side->setLayout(sidebar);
+
+     sidebar->addWidget(button1);
+     sidebar->addWidget(button2);
+     sidebar->addWidget(button3);
+     sidebar->addWidget(button4);
+     sidebar->addWidget(button5);
+     layoutH->addWidget(side);
+     layout->addWidget(m_label);
      layout->addWidget(textBox);
-     layout->addWidget(txtLog);
+     layout->addWidget(horizontalGroupBox);
+
+
 
 
      QWidget::connect(textBox,SIGNAL(textChanged(QString)),txtLog,SLOT(setText(QString)));
      QWidget::connect(button5, SIGNAL (clicked()), QApplication::instance(), SLOT (quit()));
-
 
      window->setLayout(layout);
      window->show();
