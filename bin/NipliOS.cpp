@@ -164,7 +164,7 @@ int main() {
 		fgets(command, 50, stdin);
 		token=strtok(command, " ");
 
-		if (strncmp(token, "PROC",4)==0) {
+		if (strncmp(token, "proc",4)==0 || strncmp(token, "PROC",4)==0) {
 			sem_wait(&semaphore);
 			printf("Processes unfinished queue one: %d\n", ready_queue.getSize());
 			printf("Processes unfinished queue two: %d\n", fore_ground.getSize());
@@ -174,7 +174,7 @@ int main() {
         		sem_post(&semaphore);
 
 		}
-		else if (strncmp(token, "LOAD",4)==0) {
+		else if (strncmp(token, "load",4)==0 || strncmp(token, "LOAD",4)==0) {
 			string filename;
                         sem_wait(&semaphore);
                         cout<<"Select process to load: "<< endl;
@@ -186,12 +186,12 @@ int main() {
                         counter++;
 
 		}
-		else if (strncmp(token, "MEM",3)==0) {
+		else if (strncmp(token, "mem",3)==0 || strncmp(token, "MEM",3)==0) {
 			sem_wait(&semaphore);
 			printf("Total Memory Used: %d MB\n", mainmem.getMemory());
 			sem_post(&semaphore);
 		}
-		else if (strncmp(token, "RESET",5)==0) {
+		else if (strncmp(token, "reset", 5)==0 || strncmp(token, "RESET",5)==0) {
 			sem_wait(&semaphore);
 			start=0;
 			mainmem.resetProcesses();
@@ -204,7 +204,7 @@ int main() {
 			sem_post(&semaphore);
 			counter=0;
 		}
-		else if (strncmp(token, "EXE", 3)==0) {
+		else if (strncmp(token, "exe",3)==0 ||strncmp(token, "EXE", 3)==0) {
 			sem_wait(&semaphore);
 			printf("Executing loaded programs");
 			start=1;
