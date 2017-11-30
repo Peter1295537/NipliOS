@@ -105,8 +105,8 @@ void *cpu_processing(void *input) {
 					}
 				}
 				if (turn_counter<9 && params->one->current()==-1) {
-                        		if (params->two->current()==-1 && params->three->current()>-1) {         
-                                                placeholder=params->main->getProcess((params->two->current())); 
+                        		if (params->two->current()==-1 && params->three->current()>-1) {   
+                                                placeholder=params->main->getProcess((params->three->current())); 
 						begin=placeholder->getTimeRemaining();
 						params->first->fcfs(params->three,cpu, params->main, params->iodm);
                                                 end=placeholder->getTimeRemaining();
@@ -135,6 +135,11 @@ void *cpu_processing(void *input) {
 				if (turn_counter>9) {
 					turn_counter=0;
 				}
+/* Maybe one day this will work
+				if (cycles==max) {
+					cout<<"Finished running: "<< cycles<< " cycles"<<endl; 
+				}
+*/
 			}
 
 		}
