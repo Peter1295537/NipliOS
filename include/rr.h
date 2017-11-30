@@ -11,13 +11,17 @@
 #include "cpu.h"
 #endif
 
+#ifndef IODEVICE_H
+#include "iodevice.h"
+#endif
+
 class processor;
 class rr{
 	public:
 		int quantum;
 		rr(int q);
-		void fcfs(queue* x, processor* cpu, memory* main);
-		void swap(queue* x, processor* cpu, memory* main);
+		void fcfs(queue* x, processor* cpu, memory* main,io_device_mgr* iodm);
+		void swap(queue* x, processor* cpu, memory* main,io_device_mgr* iodm);
 		int getQuantum();
 		
 				

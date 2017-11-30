@@ -5,7 +5,7 @@ process::process(){
 	state = state_t(NEW);
 	pid=0;
 	timeElapsed=0;
-	resources=false;
+	hasResources=false;
 	
 }
 process::process(string filename, int process_id){
@@ -13,7 +13,7 @@ process::process(string filename, int process_id){
 	pid=process_id;
 	timeElapsed=0;
 	timeRemaining=0;
-	resources=false;
+	hasResources=false;
 	ifstream ifs(filename);
 	char data[32];
 	char cmemory[32];
@@ -62,7 +62,7 @@ process::state_t process::getState(){
 
 
 int process::run(int cycles){
-	if(resources){
+	if(hasResources){
 	
 	}
 	while(timeRemaining>0 && cycles>0){
@@ -85,9 +85,6 @@ int process::setState(state_t newstate){
 	return state=newstate;
 }
 	
-bool process::hasResources(){
-	return resources;
-}
 string process::nextInstruction(){
 	return script.front();
 }

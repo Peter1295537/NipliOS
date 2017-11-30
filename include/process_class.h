@@ -31,7 +31,7 @@ class process{
 		bool isCritical;
 		string getName();
 		state_t getState();
-		bool hasResources();
+		bool hasResources;
 		string nextInstruction();
 		string popInstruction();
 
@@ -47,7 +47,7 @@ class process{
 		string name;
 		state_t state;
 		string filename;
-		bool resources;
+		//bool resources;
 
 
 

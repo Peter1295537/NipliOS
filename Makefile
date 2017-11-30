@@ -3,6 +3,7 @@ TEST=process_test
 CPU=cpu
 QUEUE=queue
 RR=rr
+IO=iodevice
 OS=NipliOS
 SAN_FLAGS=-lxml2 -lasan -g -std=c++11 -fsanitize=address -fno-omit-frame-pointer -fstack-protector -Wstack-protector 
 FLAGS=-g -std=c++11 -fno-omit-frame-pointer -fstack-protector -Wstack-protector 
@@ -21,11 +22,11 @@ $(CLASS):
 	g++ -c lib/$(CLASS).cpp $(FLAGS) -o lib/$(CLASS).o
 
 makeOS: 
-	g++ lib/$(MEM).cpp lib/$(CLASS).cpp lib/$(QUEUE).cpp lib/$(CPU).cpp lib/$(RR).cpp bin/$(OS).cpp -lxml2 $(THREAD) $(FLAGS) -ggdb -o bin/$(OS)
+	g++ lib/$(MEM).cpp lib/$(CLASS).cpp lib/$(QUEUE).cpp lib/$(CPU).cpp lib/$(IO).cpp lib/$(RR).cpp bin/$(OS).cpp -lxml2 $(THREAD) $(FLAGS) -ggdb -o bin/$(OS)
 
 clean:
 	rm lib/*.o 
 	rm bin/classtest
 	rm bin/cputest
-	rm $(OS)
+	rm bin/$(OS)
 	rm a.out

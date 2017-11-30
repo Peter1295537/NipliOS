@@ -1,5 +1,8 @@
 #include <vector>
 using namespace std;
+#ifndef PROCESS_H
+#include "process_class.h"
+#endif
 
 class io_device_mgr{
 	public:
@@ -12,3 +15,4 @@ class io_device_mgr{
 		vector<process*> WAIT;
 		int io_devices;
 };
+#define IODEVICE_H
