@@ -14,8 +14,11 @@ class io_device_mgr{
 	private:
 		vector<process*>* WAIT;
 		vector<string>* buffer;
-		bool out;
-		int io_devices;
+		vector<int>(5) available;
+		int** max;
+		int** allocation
+		int** need;
 		int allocateIO(process*);
+		int isSafe();
 };
 #define IODEVICE_H

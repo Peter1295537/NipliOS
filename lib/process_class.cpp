@@ -7,6 +7,7 @@ process::process(){
 	timeElapsed=0;
 	hasResources=false;
 	
+	
 }
 process::process(string filename, int process_id){
 	state = state_t(NEW);

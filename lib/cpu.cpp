@@ -36,7 +36,15 @@ int processor::run(int cycles,io_device_mgr* iodm){
 			int ioCycles = rand() % 26 +25;
 			
 			srand(time(NULL));
-			current->request=rand() % 5 + 1;
+			current->request[0]=rand() % 2 + 1;
+			srand(time(NULL));
+			current->request[1]=rand() % 3 + 1;
+			srand(time(NULL));
+			current->request[2]=rand() % 4 + 1;
+			srand(time(NULL));
+			current->request[3]=rand() % 5 + 1;
+			srand(time(NULL));
+			current->request[4]=rand() % 7 + 1;
 
 //			cout << ioCycles << endl;
 
@@ -64,13 +72,18 @@ int processor::run(int cycles,io_device_mgr* iodm){
 		cout << "Process State: " << current->getState() << endl;
 		cout << "I/O Requests Completed: " << current->ioComplete() << endl;
 		current->popInstruction();
+		run(cycles-1,iodm);
 
 	}
 	else if(inst.compare("**CRITSTART**")==0){
 		current->isCritical=true;
+		current->popInstruction();
+		run(cycles-1,iodm);
 	}
 	else if(inst.compare("**CRITEND**")==0){
 		current->isCritical=false;	
+		current->popInstruction();
+		run(cycles-1,iodm);
 	}
 	else {
 		return -1;

@@ -18,7 +18,7 @@ class process{
 		};
 		process(string,int);
 		process();
-		int request;
+		vector<int>(5) request;
 		string buff;
 		int getPID();
 	 	int getTimeElapsed();
