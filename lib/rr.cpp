@@ -12,8 +12,6 @@ void rr::swap(queue* x, processor* cpu, memory* main,io_device_mgr* iodm) {
 	process* input;
 	tmp=x->remove();
 	input=main->getProcess(tmp);
-		
-	cout<<input->getTimeRemaining()<<endl;
 	cpu->load(input);
 	cpu->run(quantum,iodm);
 	if (input->getTimeRemaining()>0 && input->getState()!=process::state_t(WAIT)) {

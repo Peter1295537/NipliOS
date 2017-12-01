@@ -1,12 +1,14 @@
 #include "../include/iodevice.h"
+
+
 io_device_mgr::io_device_mgr(vector<process*>* queue, vector<string>* buf){
 	WAIT=queue;
 	buffer=buf;
-	available[0]=2;
-	available[1]=3;
-	available[2]=4;
-	available[3]=5;
-	available[4]=7;
+	available.push_back(2);
+	available.push_back(3);
+	available.push_back(4);
+	available.push_back(5);
+	available.push_back(7);
 }
 int io_device_mgr::requestIO(process* p){
 	WAIT->push_back(p);
@@ -98,4 +100,5 @@ int io_device_mgr::getSize(){
 process* io_device_mgr::getProcAtIndex(int i){
 	return (*WAIT)[i];
 }
+
 

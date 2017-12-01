@@ -5,7 +5,6 @@ using namespace std;
 
 memory::memory(){ //memory constructor
 	bitset<SIZE> mem; 
-	int pidCounter = 0;
 	vector<process*> processes; //vector of processes
 }
 int memory::getTotalMemory(){
@@ -22,12 +21,11 @@ process* memory::getProcess(int pid){
 	return &processes[pid];
 }
 
-void memory::createProcess(string filename){
-	process tmp(filename, pidCounter);
+void memory::createProcess(string filename, int x){
+	process tmp(filename, x);
 	int procmem = tmp.getMemory();
 	if(procmem <= getFreeMemory()){ 
 	processes.push_back(tmp); //adds tmp process to end of vector
-	pidCounter++;
 	}
 	else{
 	cout<<"Insufficient memory"<<endl;
@@ -36,10 +34,6 @@ void memory::createProcess(string filename){
 void memory::resetProcesses(){ //removes all processes
 	mem.reset(); //set all bits to 0
 	processes.clear();
-	pidCounter = 0;
-}
-int memory::getPidCounter(){
-	return pidCounter;
 }
 
 int memory::getNumProcesses(){

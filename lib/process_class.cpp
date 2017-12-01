@@ -1,5 +1,6 @@
 #include "../include/process_class.h"
 
+
 using namespace std;
 process::process(){
 	state = state_t(NEW);
@@ -16,6 +17,8 @@ process::process(string filename, int process_id){
 	timeRemaining=0;
 	hasResources=false;
 	ifstream ifs(filename);
+	srand(time(NULL));
+	sem = rand() % 5 +1;
 	char data[32];
 	char cmemory[32];
 	ifs.getline(cmemory,32);
@@ -97,3 +100,4 @@ string process::popInstruction(){
 int process:: ioComplete(){
 	return complete;
 }
+
