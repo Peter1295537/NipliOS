@@ -211,10 +211,10 @@ int main() {
 	
 
 	pthread_t threads[4];
-	int cpu1= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
-	int cpu2= pthread_create(&threads[2], NULL, cpu_processing, (void*) &params);
-        int cpu3= pthread_create(&threads[3], NULL, cpu_processing, (void*) &params);
-        int cpu4= pthread_create(&threads[4], NULL, cpu_processing, (void*) &params);
+	int cpu1= pthread_create(&threads[0], NULL, cpu_processing, (void*) &params);
+	int cpu2= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
+        int cpu3= pthread_create(&threads[2], NULL, cpu_processing, (void*) &params);
+        int cpu4= pthread_create(&threads[3], NULL, cpu_processing, (void*) &params);
 
 		
 	while(1) {
@@ -236,10 +236,11 @@ int main() {
 		}
 		else if (strncmp(token, "load",4)==0 || strncmp(token, "LOAD",4)==0) {
 			string filename;
+			string front="../data/";
                         sem_wait(&semaphore);
                         cout<<"Select process to load: "<< endl;
                         cin>>filename;
-                        mainmem.createProcess(filename);
+                        mainmem.createProcess(front+filename);
                         ready_queue.insert(counter);
                         sem_post(&semaphore);
 
@@ -277,7 +278,10 @@ int main() {
 			sem_post(&semaphore);
 	
 		}
- 		   else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
+		else if (strncmp(token,"man", 3)==0 || strncmp(token, "MAN", 3)==0) {
+			int out=system("cat ../man.txt");		
+		}
+		else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
 			raise(SIGKILL);
     		}
 	}
