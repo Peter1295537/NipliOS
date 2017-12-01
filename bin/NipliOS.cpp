@@ -297,7 +297,14 @@ int main() {
 	
 		}
 		else if (strncmp(token,"man", 3)==0 || strncmp(token, "MAN", 3)==0) {
-			int out=system("cat ../man.txt");		
+			int out=system("cat ../README.md");		
+		}
+		else if (strncmp(token,"gen",3)==0 || strncmp(token, "GEN", 3)==0) {
+			cout<<"Enter number of processes: "<<endl;
+			int numProc;
+			cin<<numProc;
+			int output=system("python ../data/procGen");
+			int printer=system(numProc)
 		}
 		else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
 			raise(SIGKILL);
