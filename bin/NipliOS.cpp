@@ -124,8 +124,8 @@ void *cpu_processing(void *input) {
 					}
 				}
 				if (turn_counter<9 && params->one->current()==-1) {
-                        		if (params->two->current()==-1 && params->three->current()>-1) {         
-                                                placeholder=params->main->getProcess((params->two->current())); 
+                        		if (params->two->current()==-1 && params->three->current()>-1) {   
+                                                placeholder=params->main->getProcess((params->three->current())); 
 						begin=placeholder->getTimeRemaining();
 						params->first->fcfs(params->three,cpu, params->main, params->iodm);
                                                 end=placeholder->getTimeRemaining();
@@ -154,6 +154,11 @@ void *cpu_processing(void *input) {
 				if (turn_counter>9) {
 					turn_counter=0;
 				}
+/* Maybe one day this will work
+				if (cycles==max) {
+					cout<<"Finished running: "<< cycles<< " cycles"<<endl; 
+				}
+*/
 			}
 
 		}
@@ -249,10 +254,11 @@ int main() {
 		}
 		else if (strncmp(token, "load",4)==0 || strncmp(token, "LOAD",4)==0) {
 			string filename;
+			string front="../data/";
                         sem_wait(&semaphore);
                         cout<<"Select process to load: "<< endl;
                         cin>>filename;
-                        mainmem.createProcess(filename);
+                        mainmem.createProcess(front+filename);
                         ready_queue.insert(counter);
                         sem_post(&semaphore);
 
@@ -290,7 +296,10 @@ int main() {
 			sem_post(&semaphore);
 	
 		}
- 		   else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
+		else if (strncmp(token,"man", 3)==0 || strncmp(token, "MAN", 3)==0) {
+			int out=system("cat ../man.txt");		
+		}
+		else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
 			raise(SIGKILL);
     		}
 	}
