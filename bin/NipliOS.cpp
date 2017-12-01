@@ -4,6 +4,7 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <string>
 #include <string.h>
 #include <iostream>
 #include <pthread.h>
@@ -302,9 +303,10 @@ int main() {
 		else if (strncmp(token,"gen",3)==0 || strncmp(token, "GEN", 3)==0) {
 			cout<<"Enter number of processes: "<<endl;
 			int numProc;
-			cin<<numProc;
-			int output=system("python ../data/procGen");
-			int printer=system(numProc)
+			cin>>numProc;
+			string yes= "yes " +numProc;
+			int output=system("| python ../data/procGen");
+			cout<<"Created Processes"<<endl;
 		}
 		else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
 			raise(SIGKILL);
