@@ -277,6 +277,7 @@ int main() {
 			string filename;
 			string front="../data/";
                         sem_wait(&semaphore);
+			sleep(0.5);
                         cout<<"Select process to load: "<< endl;
                         cin>>filename;
                         mainmem.createProcess(front+filename, counter);
