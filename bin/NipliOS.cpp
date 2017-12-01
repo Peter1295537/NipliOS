@@ -45,6 +45,24 @@ struct cpuThreadParams {
 	
 };
 
+void *manage_io(void *input) {
+	struct cpuThreadParams* params=(cpuThreadParams*)input;        
+	io_device_mgr* iodm;	
+	iodm=params->iodm;
+	while(1){
+		if(iodm->go){
+			for(int i=0;i<iodm->getSize();i++){
+				process* p = iodm->getProcAtIndex(i);
+				if(iodm->allocateIO(p)==0){
+					p->setState(process::state_t(READY));		
+					params->one->insert(p->getPID());
+
+				}
+			}			
+			iodm->go=false;
+		}
+	}
+}
 
 void *cpu_processing(void *input) {
         
@@ -179,9 +197,9 @@ int main() {
 	rr fore(50);
 
 	//io device manager
-	io_device_mgr iodm;
 	vector<process*> WAIT;
 	vector<string> output_buffer;
+	io_device_mgr iodm(&WAIT,&output_buffer);
 	
 
 	signal(SIGINT, signal_handler);
@@ -205,12 +223,12 @@ int main() {
 	params.cycles=cycles;
 	
 
-	pthread_t threads[4];
-	int cpu1= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
-	int cpu2= pthread_create(&threads[2], NULL, cpu_processing, (void*) &params);
-        int cpu3= pthread_create(&threads[3], NULL, cpu_processing, (void*) &params);
-        int cpu4= pthread_create(&threads[4], NULL, cpu_processing, (void*) &params);
-
+	pthread_t threads[5];
+	int cpu1= pthread_create(&threads[0], NULL, cpu_processing, (void*) &params);
+	int cpu2= pthread_create(&threads[1], NULL, cpu_processing, (void*) &params);
+        int cpu3= pthread_create(&threads[2], NULL, cpu_processing, (void*) &params);
+        int cpu4= pthread_create(&threads[3], NULL, cpu_processing, (void*) &params);
+	int iom = pthread_create(&threads[4], NULL, manage_io, (void*) &params);
 		
 	while(1) {
 		

@@ -18,27 +18,55 @@ int io_device_mgr::requestIO(process* p){
 	}
 }
 int io_device_mgr::allocateIO(process* p){
-	p->hasResources = true;
-	for(int i=0;i<5;i++){
-		available[i]+=p->request[i];
+	if(isSafe(p)){
+		
+		p->hasResources = true;
+		for(int i=0;i<5;i++){
+			available[i]-=p->request[i];
+		}
+		for(int i=0;i<WAIT->size();i++){
+			if((*WAIT)[i]==p){
+				for(int j=0;j<5;j++){
+					allocation[i][j]+=p->request[i];
+					need[i][j]-=p->request[i];
+				}
+			}
+		}
+		
+	return 0;
 	}
-	
+	return 1;
 }
 int io_device_mgr::freeIO(process* p){
 	p->hasResources=false;
-	io_devices += p->request;
+	for(int i=0;i<5;i++){
+		available[i]+=p->request[i];
+	}
+	for(int i=0;i<WAIT->size();i++){
+		if((*WAIT)[i]==p){
+			WAIT->erase(WAIT->begin()+i);
+			free(max[i]);
+			free(allocation[i]);
+			free(need[i]);
+			}
+		}
+	go=true;
 }
 int io_device_mgr::requestOut(process* p){
-	*buffer.push_back(p->buff);
+	buffer->push_back(p->buff);
 }
-bool isSafe(process* p, int index){
+bool io_device_mgr::isSafe(process* p){
+	int index;
+	for(index=0;index<WAIT->size() && (*WAIT)[index]!=p;index++){
+		continue;
+	}
 	//make copies of the sets
 	vector<int> _available = available;
 	int** _allocation = allocation;
 	int** _need = need;
-	//int s = WAIT->size();
+	int s = WAIT->size();
 	//allocate resources
-	for(int i=0;i<p->request->size();i++){
+	for(int i=0;i<p->request.size();i++){
 		_available[i] -= p->request[i];
 		_allocation[index][i] = _allocation[index][i] + p->request[i];
 		_need[index][i] = _need[index][i] - p->request[i];
@@ -63,5 +91,11 @@ bool isSafe(process* p, int index){
 		}	
 	}
 	return true;
+}
+int io_device_mgr::getSize(){
+	return WAIT->size();
+}
+process* io_device_mgr::getProcAtIndex(int i){
+	return (*WAIT)[i];
 }
 

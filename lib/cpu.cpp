@@ -94,7 +94,7 @@ int processor::run(int cycles,io_device_mgr* iodm){
 int processor::calculate(int cycles,io_device_mgr* iodm){
 	int leftover = current->run(cycles);
 	if(leftover>0){
-		if(current->getTimeRemaining<=0){
+		if(current->getTimeRemaining()<=0){
 			return 0;
 		}
 		else{

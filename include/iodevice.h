@@ -10,15 +10,18 @@ class io_device_mgr{
 		int requestIO(process*);
 		int freeIO(process*);
 		int requestOut(process*);
+		bool go;
+		bool isSafe(process*);
+		int allocateIO(process*);
+		int getSize();
+		process* getProcAtIndex(int);
 
 	private:
 		vector<process*>* WAIT;
 		vector<string>* buffer;
-		vector<int>(5) available;
+		vector<int> available;
 		int** max;
-		int** allocation
+		int** allocation;
 		int** need;
-		int allocateIO(process*);
-		int isSafe();
 };
 #define IODEVICE_H
