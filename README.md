@@ -12,6 +12,7 @@ RESET- Resets memory, queues, and processes. Stops executing processes if exe wa
 
 EXE- Prompts user for the number of cycles to run. Then starts executing processes.
 
+STOP- Stops the execution of processes.
 
 MAN- Prints information on the use of commands.
 
