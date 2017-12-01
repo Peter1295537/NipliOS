@@ -8,6 +8,7 @@
 #include <iostream>
 #include <pthread.h>
 #include <semaphore.h>
+#include <vector>
 
 #include "../include/rr.h"
 //#include "../include/iodevice.h"
@@ -184,6 +185,8 @@ int main() {
 
 	//io device manager
 	io_device_mgr iodm;
+	vector<process*> WAIT;
+	vector<string> output_buffer;
 	
 
 	signal(SIGINT, signal_handler);

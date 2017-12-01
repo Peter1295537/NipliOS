@@ -6,13 +6,19 @@ using namespace std;
 
 class io_device_mgr{
 	public:
-		io_device_mgr();
+		io_device_mgr(vector<process*>*,vector<string>*);
 		int requestIO(process*);
-		int allocateIO(process*);
 		int freeIO(process*);
+		int requestOut(process*);
 
 	private:
-		vector<process*> WAIT;
-		int io_devices;
+		vector<process*>* WAIT;
+		vector<string>* buffer;
+		vector<int>(5) available;
+		int** max;
+		int** allocation
+		int** need;
+		int allocateIO(process*);
+		int isSafe();
 };
 #define IODEVICE_H
