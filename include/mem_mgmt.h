@@ -16,15 +16,15 @@ class memory{
 		int getFreeMemory();
 		int getUsedMemory();
 		process* getProcess(int pid);
-		void createProcess(string filename);
-		int findBlock(process p);
+		int findBlock();
+		void createProcess(string filename, int x);
 		void allocate(int base, int limit);
 		void free(int base, int limit);
 		void resetProcesses();
 		int getNumProcesses();
 	private:
-		int pidCounter;
 		int procmem;
+		int freecount;
 		process tmp;
 		vector<process> processes;
 		bitset<SIZE> mem;

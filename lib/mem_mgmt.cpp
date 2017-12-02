@@ -5,6 +5,7 @@ using namespace std;
 
 memory::memory(){ //memory constructor
 	bitset<SIZE> mem; 
+	int baseindex = 0;
 	vector<process*> processes; //vector of pointers to processes
 }
 int memory::getTotalMemory(){
@@ -21,26 +22,28 @@ process* memory::getProcess(int pid){
 	return &processes[pid];
 }
 
-void memory::createProcess(string filename){
-	process tmp(filename, pidCounter);
+int memory::findBlock(){ //first fit allocation, returns index of first free block
+	//find first contigous block big enough to hold process
+	int freecount = 0;
+	for(int i = 0; i < mem.size(); i++){
+		while(mem.test(freecount)){
+		freecount++;
+		}
+	}	
+	return freecount;
+}
+void memory::createProcess(string filename, int x){
+	process tmp(filename, x);
 	int procmem = tmp.getMemory();
 	if(procmem <= getFreeMemory()){ 
 	processes.push_back(tmp); //adds tmp process to end of vector
+	allocate(findBlock(), findBlock()+(procmem-1));
 	}
 	else{
 	cout<<"Insufficient memory"<<endl;
 	}
 }
 
-int memory::findBlock(process p){ //first fit allocation
-	int procmem = p.getMemory(); 
-	if(mem.none()){ //if no bits are set, just allocate procmem amount of space
-		allocate(0, procmem-1); 
-	}
-	else{ //find first contigous block big enough to hold process
-		
-	}
-}
 void memory::allocate(int base, int limit){ //set all bits from base register to limit register to 1
 	for(int i = base; i <= limit; i++){
 		mem.set(i, 1);
