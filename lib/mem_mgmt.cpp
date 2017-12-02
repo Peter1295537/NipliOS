@@ -5,7 +5,11 @@ using namespace std;
 
 memory::memory(){ //memory constructor
 	bitset<SIZE> mem; 
+<<<<<<< HEAD
 	vector<process*> processes; //vector of pointers to processes
+=======
+	vector<process*> processes; //vector of processes
+>>>>>>> 6bc3b2a4efa4b85ce097c932db085092186f24d7
 }
 int memory::getTotalMemory(){
 	return SIZE;
@@ -21,8 +25,8 @@ process* memory::getProcess(int pid){
 	return &processes[pid];
 }
 
-void memory::createProcess(string filename){
-	process tmp(filename, pidCounter);
+void memory::createProcess(string filename, int x){
+	process tmp(filename, x);
 	int procmem = tmp.getMemory();
 	if(procmem <= getFreeMemory()){ 
 	processes.push_back(tmp); //adds tmp process to end of vector

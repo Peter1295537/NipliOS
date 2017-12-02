@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <vector>
 #include <errno.h>
+#include <cstdlib>
+#include <ctime>
+
 
 using namespace std;
 class process{
@@ -46,6 +49,11 @@ class process{
 	 	int priority;
 	 	int numrequests;
 		int complete;
+		static int sem1;
+		static int sem2;
+		static int sem3;
+		static int sem4;
+		int sem;
 		string name;
 		state_t state;
 		string filename;

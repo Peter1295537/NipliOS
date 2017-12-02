@@ -44,6 +44,7 @@ struct cpuThreadParams {
 	int* num_cycles;
 	int cycles;
 	
+	
 };
 
 void *manage_io(void *input) {
@@ -176,6 +177,24 @@ void resetQueue(queue* input) {
 	}
 }
 
+void printProcs(int counter, memory mem) {
+	for (int i=0;i<counter;i++) {
+		cout<<"PID: "<<mem.getProcess(i)->getPID()<<endl;
+		cout<<"Memory Used: " <<mem.getProcess(i)->getMemory()<<endl;
+		if (mem.getProcess(i)->getState()==0)
+			cout<<"State: NEW"<<endl;
+		else if  (mem.getProcess(i)->getState()==1)
+			cout<<"State: READY" <<endl;
+		else if (mem.getProcess(i)->getState()==2)
+			cout<<"State: RUN"<<endl;
+		else if (mem.getProcess(i)->getState()==3)
+			cout<<"State: WAIT"<<endl;
+		else if (mem.getProcess(i)->getState()==4)
+			cout<<"State: EXIT"<<endl;
+		cout<<"Time Elapsed: "<< mem.getProcess(i)->getTimeElapsed()<<endl;
+		cout<<"Time Remaining: "<<mem.getProcess(i)->getTimeRemaining()<<endl;
+	}
+}
 
 
 int main() {
@@ -248,18 +267,20 @@ int main() {
 			printf("Processes unfinished queue one: %d\n", ready_queue.getSize());
 			printf("Processes unfinished queue two: %d\n", fore_ground.getSize());
 			printf("Processes unfinished queue three: %d\n", back_ground.getSize());
-			printf("Processes unfinished wait queue: %d\n", wait_queue.getSize());
-			printf("Processes unfinished io queue: %d\n", io_queue.getSize());
-        		sem_post(&semaphore);
+			printf("Processes unfinished wait queue: %d\n", WAIT.size());
+        		cout<<"\n";
+			printProcs(counter, mainmem);
+			sem_post(&semaphore);
 
 		}
 		else if (strncmp(token, "load",4)==0 || strncmp(token, "LOAD",4)==0) {
 			string filename;
 			string front="../data/";
                         sem_wait(&semaphore);
+			sleep(0.5);
                         cout<<"Select process to load: "<< endl;
                         cin>>filename;
-                        mainmem.createProcess(front+filename);
+                        mainmem.createProcess(front+filename, counter);
                         ready_queue.insert(counter);
                         sem_post(&semaphore);
 
@@ -302,12 +323,16 @@ int main() {
 			int out=system("cat ../README.md");		
 		}
 		else if (strncmp(token,"gen",3)==0 || strncmp(token, "GEN", 3)==0) {
+			char buffer [30];
 			cout<<"Enter number of processes: "<<endl;
-			int numProc;
-			cin>>numProc;
-			string yes= "yes " +numProc;
-			int output=system("| python ../data/procGen");
+			int output=system("python ../data/procGen.py");
 			cout<<"Created Processes"<<endl;
+		}
+		else if (strncmp(token,"stop", 4)==0 || strncmp(token, "STOP",4)==0) {
+			sem_wait(&semaphore);
+			start=0;
+			cout<<"Execution stopped"<<endl;
+			sem_post(&semaphore);
 		}
 		else if (strncmp(token, "exit",4)==0 || strncmp(token, "EXIT",4)==0) {
 			raise(SIGKILL);
