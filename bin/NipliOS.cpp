@@ -267,7 +267,7 @@ int main() {
 			printf("Processes unfinished queue one: %d\n", ready_queue.getSize());
 			printf("Processes unfinished queue two: %d\n", fore_ground.getSize());
 			printf("Processes unfinished queue three: %d\n", back_ground.getSize());
-			printf("Processes unfinished wait queue: %d\n", WAIT.size());
+			printf("Processes unfinished wait queue: %zu\n", WAIT.size());
         		cout<<"\n";
 			printProcs(counter, mainmem);
 			sem_post(&semaphore);
