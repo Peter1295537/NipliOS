@@ -18,7 +18,10 @@ class memory{
 		int getPidCounter();
 		process* getProcess(int pid);
 		void createProcess(string filename);
-		void resetProcesses(); 
+		int findBlock(process p);
+		void allocate(int base, int limit);
+		void free(int base, int limit);
+		void resetProcesses();
 		int getNumProcesses();
 	private:
 		int pidCounter;
